@@ -1,0 +1,49 @@
+.game-over {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  animation: glow-background 5s infinite alternate;
+}
+
+.game-over-content {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 50px 70px;
+  border-radius: 15px;
+  box-shadow: 0 0 50px rgba(255, 0, 255, 0.6);
+}
+
+.title {
+  font-size: 4rem;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 1), 0 0 20px rgba(0, 255, 255, 1),
+    0 0 40px rgb(234, 0, 255);
+  margin-bottom: 20px;
+}
+
+.winner {
+  font-size: 2rem;
+  color: #00fff0;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 1), 0 0 20px rgba(0, 255, 255, 1),
+    0 0 40px rgba(0, 255, 255, 1);
+  margin-top: 10px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(0, 255, 255, 1), 0 0 20px rgba(0, 255, 255, 1),
+      0 0 40px rgba(0, 255, 255, 1);
+  }
+  50% {
+    transform: scale(1.1);
+    text-shadow: 0 0 15px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 1),
+      0 0 60px rgba(0, 255, 255, 1);
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(0, 255, 255, 1), 0 0 20px rgba(0, 255, 255, 1),
+      0 0 40px rgba(0, 255, 255, 1);
+  }
+}

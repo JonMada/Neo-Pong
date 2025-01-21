@@ -1,0 +1,138 @@
+.homepage {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  color: white;
+  margin-top: -65px;
+}
+
+h1 {
+  font-size: 6.4em;
+  text-align: center;
+  text-shadow: 0 0 15px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.8);
+}
+
+form {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(255, 0, 255, 0.7);
+  backdrop-filter: blur(10px);
+  font-size: 1.9em;
+}
+
+.input-player {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.label {
+  margin-right: 20px;
+  margin-left: 20px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+input {
+  height: 50px;
+  text-align: center;
+  font-family: "Oxanium", serif;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  font-size: 1em;
+}
+
+#player1 {
+  width: 350px;
+}
+
+input [type="text"] {
+  width: 700px;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 15px rgba(255, 0, 255, 1);
+}
+
+button {
+  margin-top: 50px;
+  font-size: 1.3em;
+  background-color: rgba(0, 255, 255, 0.8);
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 5px;
+  cursor: none;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 1);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 1);
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: rgba(255, 0, 255, 1);
+  box-shadow: 0 0 25px rgba(255, 0, 255, 1);
+}
+
+button:active {
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+.difficulty-select {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+
+  label {
+    font-size: 1em;
+  }
+
+  .difficulty-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 25px;
+    margin-top: -15px;
+  }
+
+  .difficulty-button {
+    padding: 10px 20px;
+    font-size: 0.7em;
+    border: 2px solid rgba(255, 0, 255, 0.6);
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    cursor: none;
+    text-shadow: 0 0 5px rgba(255, 0, 255, 1);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+
+    &:hover {
+      transform: scale(1.1);
+      background-color: rgba(255, 0, 255, 0.8);
+      box-shadow: 0 0 20px rgba(255, 0, 255, 1);
+    }
+
+    &.selected {
+      background-color: rgba(255, 0, 255, 1);
+      box-shadow: 0 0 10px rgba(255, 0, 255, 1), 0 0 30px rgba(255, 0, 255, 0.8);
+      border-color: rgba(255, 255, 255, 1);
+      transform: scale(1.2);
+    }
+  }
+}

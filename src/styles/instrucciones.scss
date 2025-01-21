@@ -1,0 +1,20 @@
+.instructions-container {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+.instructions-container p {
+  font-size: 1.2em;
+  color: #ffffff; /* Blanco brillante */
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7),
+    0 0 20px rgba(0, 255, 255, 0.5); /* Resplandor blanco */
+  margin: 10px 0;
+}
+
+.instructions-container p span {
+  color: #ff007f; /* Rosa neón para los nombres */
+  text-shadow: 0 0 15px #ff007f, 0 0 30px #ff007f, 0 0 45px #ff007f;
+  font-size: 1.2em;
+}
