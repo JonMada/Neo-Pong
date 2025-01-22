@@ -1,0 +1,59 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 10, 25, 0.9); /* Fondo oscuro con transparencia */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(10px); /* Efecto de desenfoque */
+}
+
+.modal {
+  background: linear-gradient(
+    135deg,
+    #1e1e2e,
+    #2b2b3c
+  ); /* Fondo degradado futurista */
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); /* Brillo azul alrededor */
+  border: 2px solid rgba(0, 255, 255, 0.6); /* Borde brillante */
+  animation: modal-appearance 0.3s ease-out; /* Animación de entrada */
+}
+
+.modal-message {
+  font-size: 1.5em;
+  text-align: center;
+  text-shadow: 0 0 15px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.8);
+}
+
+.modal-close-button {
+  padding: 15px 50px;
+  font-size: 1.5em;
+  background-color: rgba(0, 255, 255, 0.8);
+  color: white;
+  border: 2px solid rgba(255, 0, 255, 1);
+  border-radius: 10px;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 1);
+  box-shadow: 0 0 20px rgba(255, 0, 255, 1);
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+.modal-close-button:hover {
+  background-color: rgba(255, 0, 255, 1);
+  color: #fff;
+  border-color: rgba(0, 255, 255, 0.8);
+  transform: scale(1.1); /* Agrega un pequeño aumento de escala */
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.8); /* Brillo más fuerte en hover */
+}
+
+.modal-close-button:active {
+  transform: scale(1.05);
+  background-color: rgba(255, 0, 255, 1);
+  box-shadow: 0 0 15px rgba(255, 0, 255, 1);
+}

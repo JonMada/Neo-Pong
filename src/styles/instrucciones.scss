@@ -1,20 +1,50 @@
 .instructions-container {
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 600px;
-  text-align: center;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: absolute;
+  top: 62%;
+  transform: translateY(-50%);
+  width: 100%;
+  z-index: 10;
+  transition: opacity 1s ease-out;
 }
 
-.instructions-container p {
-  font-size: 1.2em;
-  color: #ffffff; /* Blanco brillante */
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7),
-    0 0 20px rgba(0, 255, 255, 0.5); /* Resplandor blanco */
-  margin: 10px 0;
+.instructions-container.fade-out {
+  opacity: 0;
+}
+
+.instruction {
+  position: absolute;
+  width: 300px;
+  top: 30%;
+  transform: translateY(
+    -60%
+  ); /* Centramos verticalmente cada bloque de instrucciones */
+  font-size: 1.4em;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.7),
+    0 0 30px rgba(0, 255, 255, 0.5);
+  margin: 0;
+  font-weight: bold;
+  z-index: 20;
+}
+
+.instruction-left {
+  left: -22%; /* Colocamos la instrucción en el lateral izquierdo */
+}
+
+.instruction-right {
+  right: 36%; /* Colocamos la instrucción en el lateral derecho */
 }
 
 .instructions-container p span {
-  color: #ff007f; /* Rosa neón para los nombres */
+  color: #ff007f;
   text-shadow: 0 0 15px #ff007f, 0 0 30px #ff007f, 0 0 45px #ff007f;
-  font-size: 1.2em;
+}
+
+.instruction p {
+  margin: 0;
 }

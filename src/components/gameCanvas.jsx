@@ -10,12 +10,13 @@ const GameCanvas = () => {
 
   const player1Y = useRef(150);
   const player2Y = useRef(150); // La IA usa esta referencia
-  const ball = useRef({ x: 400, y: 200, dx: 2, dy: 1.5, trail: [] });
+  const ball = useRef({ x: 400, y: 200, dx: 0, dy: 0, trail: [] });
 
   const [score, setScore] = useState({ player1: 0, player2: 0 });
   const [showGoalAnimation, setShowGoalAnimation] = useState(false);
   const [goalLock, setGoalLock] = useState(false);
   const [ballInMiddle, setBallInMiddle] = useState(false);
+  const [countdown, setCountdown] = useState(null);
 
   const paddleWidth = 10;
   const paddleHeight = 125;
@@ -39,7 +40,8 @@ const GameCanvas = () => {
     return { dx: (dx / magnitude) * speed, dy: (dy / magnitude) * speed };
   };
 
-  const handleKeyDown = (e) => {
+  // Control de las teclas de Player 1 (usando 'W' y 'S')
+  const handleKeyDownPlayer1 = (e) => {
     const step = 45;
     if ((e.key === "w" || e.key === "W") && player1Y.current > 0)
       player1Y.current -= step;
@@ -50,12 +52,73 @@ const GameCanvas = () => {
       player1Y.current += step;
   };
 
+  // Control de las teclas de Player 2 (usando flechas)
+  const handleKeyDownPlayer2 = (e) => {
+    const step = 45;
+    if ((e.key === "ArrowUp" || e.key === "Up") && player2Y.current > 0)
+      player2Y.current -= step;
+    if (
+      (e.key === "ArrowDown" || e.key === "Down") &&
+      player2Y.current < canvasHeight - paddleHeight
+    )
+      player2Y.current += step;
+  };
+
+  // useEffect para agregar y remover los listeners de las teclas
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
+    // Siempre habilitar controles para Player 1
+    window.addEventListener("keydown", handleKeyDownPlayer1);
+
+    // Solo habilitar controles para Player 2 si no es un bot (IA)
+    if (player2.name !== "AI") {
+      window.addEventListener("keydown", handleKeyDownPlayer2);
+    }
+
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDownPlayer1);
+      // Remover solo si Player 2 es un humano
+      if (player2.name !== "AI") {
+        window.removeEventListener("keydown", handleKeyDownPlayer2);
+      }
     };
-  }, [showGoalAnimation, ballInMiddle]);
+  }, [showGoalAnimation, ballInMiddle, player2.name]); // Asegúrate de incluir player2.name como dependencia
+
+  //CountDown
+
+  useEffect(() => {
+    let timer;
+    let hideGoTimer;
+
+    setCountdown(3);
+
+    timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev === 1) {
+          clearInterval(timer);
+          return "GO!";
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    hideGoTimer = setTimeout(() => {
+      setCountdown(null);
+      ball.current = {
+        ...ball.current,
+        dx: 0, // La pelota está estática hasta que termine el countdown
+        dy: 0,
+      };
+      setTimeout(() => {
+        ball.current.dx = 2; // Asigna velocidad inicial después de que termina el countdown
+        ball.current.dy = 1.5;
+      }, 50); // Pequeño retraso para asegurar que el countdown haya desaparecido
+    }, 4000);
+
+    return () => {
+      clearInterval(timer);
+      clearTimeout(hideGoTimer);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -224,7 +287,7 @@ const GameCanvas = () => {
 
     // Actualización de la pelota
     const updateBall = () => {
-      if (showGoalAnimation) return;
+      if (countdown !== null || showGoalAnimation) return;
 
       let { x, y, dx, dy } = ball.current;
 
@@ -333,15 +396,27 @@ const GameCanvas = () => {
 
     const aiMovement = () => {
       // Evitar el movimiento si la pelota está en el medio o está detenida
-      if (ballInMiddle || ball.current.dy === 0) {
+      if (ballInMiddle || ball.current.dy === 0 || player2.name !== "AI") {
         return;
       }
 
       // Configuración de la velocidad base y margen de error según la dificultad
       const difficultySettings = {
-        hard: { speedMultiplier: 3.2, errorMargin: 1, reactionDelay: 1 },
-        normal: { speedMultiplier: 2.6, errorMargin: 5, reactionDelay: 5 },
-        easy: { speedMultiplier: 2.2, errorMargin: 7, reactionDelay: 10 },
+        hard: {
+          speedMultiplier: 4.0,
+          errorMargin: 0.1,
+          reactionDelay: 0.2,
+        },
+        normal: {
+          speedMultiplier: 3.2,
+          errorMargin: 1.5,
+          reactionDelay: 1.5,
+        },
+        easy: {
+          speedMultiplier: 3,
+          errorMargin: 2,
+          reactionDelay: 2,
+        },
       };
 
       // Establecer la velocidad base, margen de error y retraso de reacción según la dificultad
@@ -355,13 +430,13 @@ const GameCanvas = () => {
       lastMoveTime = Date.now(); // Actualiza el tiempo de la última acción
 
       // Predicción de la posición futura de la pelota
-      const predictedBallY = ball.current.y + ball.current.dy * 0.8; // Factor de predicción fijo
+      const predictionFactor = difficulty === "hard" ? 1 : 0.8; // IA más precisa en dificultad alta
+      const predictedBallY =
+        ball.current.y + ball.current.dy * predictionFactor;
 
       // Introducimos algo de "ruido" o aleatoriedad para hacer el movimiento más humano
       let targetY =
-        predictedBallY +
-        (Math.random() * errorMargin - errorMargin / 2) + // Margen de error aleatorio
-        Math.sin(Date.now() / 200) * 10; // Oscilación suave para hacer el movimiento más impredecible
+        predictedBallY + (Math.random() * errorMargin - errorMargin / 2); // Margen de error aleatorio
 
       // Calcular la distancia a la que la IA tiene que moverse
       const distanceToTarget = Math.abs(player2Y.current - targetY);
@@ -369,17 +444,23 @@ const GameCanvas = () => {
       // Factor de velocidad dinámico dependiendo de la distancia (más rápido cerca de la pelota)
       const speedFactor = Math.max(0.2, 1 - distanceToTarget / canvasHeight);
 
-      // Introducir un pequeño factor aleatorio para simular variabilidad en la IA
-      const randomSpeedFactor = Math.random() * 0.2 + 0.9; // Factor aleatorio entre 0.9 y 1.1
+      // Reducimos la aleatoriedad en dificultades altas
+      const randomSpeedFactor =
+        difficulty === "hard"
+          ? Math.random() * 0.05 + 0.95 // Factor aleatorio entre 0.95 y 1
+          : difficulty === "normal"
+          ? Math.random() * 0.1 + 0.9 // Menos aleatoriedad en "normal"
+          : Math.random() * 0.3 + 0.7; // Mayor aleatoriedad en "easy"
+
       const speed = aiSpeed * speedMultiplier * speedFactor * randomSpeedFactor;
 
       // Movimiento más humano: la IA no siempre se mueve directamente al objetivo
       if (player2Y.current < targetY) {
         // Si la IA está por debajo del objetivo, intenta moverse hacia abajo
-        player2Y.current += speed * (Math.random() * 0.3 + 0.7); // Movimiento no lineal
+        player2Y.current += speed * (Math.random() * 0.2 + 0.8); // Movimiento más directo en dificultades altas
       } else if (player2Y.current > targetY) {
         // Si la IA está por encima del objetivo, intenta moverse hacia arriba
-        player2Y.current -= speed * (Math.random() * 0.3 + 0.7); // Movimiento no lineal
+        player2Y.current -= speed * (Math.random() * 0.2 + 0.8); // Movimiento más directo en dificultades altas
       }
 
       // Aseguramos que la IA no se mueva fuera de los límites de la pantalla
@@ -394,9 +475,13 @@ const GameCanvas = () => {
 
   return (
     <div>
+      {/* CountDown Animation*/}
+      {countdown !== null && <div className="countdown">{countdown}</div>}
+
+      {/* Goal Animation */}
       {showGoalAnimation && (
         <div className="goal-animation">
-          <h1>¡GOAL!</h1>
+          <h1>GOAL!</h1>
         </div>
       )}
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const HomePage = () => {
+const AIMenu = () => {
   const [player1, setPlayer1] = useState(""); // Estado para el jugador 1
   const [player1Color, setPlayer1Color] = useState("#ff0000"); // Color inicial para player 1
   const [difficulty, setDifficulty] = useState("normal"); // Dificultad seleccionada
@@ -16,10 +16,10 @@ const HomePage = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Evitar el comportamiento por defecto (enviar el formulario)
+    e.preventDefault();
 
     // Configuración para la IA: nombre fijo y color aleatorio
-    const player2 = { name: "IA", color: getRandomColor() };
+    const player2 = { name: "AI", color: getRandomColor() };
 
     // Redirigir a la página del juego pasando los nombres y colores como estado
     navigate("/game", {
@@ -93,4 +93,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default AIMenu;

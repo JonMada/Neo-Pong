@@ -1,6 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import HomePage from "./components/homePage";
+//Importación de Menus
+import Menu from "./components/menu";
+import LocalMenu from "./components/localMenu";
+import AIMenu from "./components/AIMenu";
+
 import GameCanvas from "./components/gameCanvas";
 import AudioPlayer from "./components/audioPlayer";
 import CursorEffect from "./components/cursor";
@@ -17,7 +21,9 @@ const App = () => {
         <HomeButton />
         <AudioPlayer />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Menu />} />
+          <Route path="/local-game" element={<LocalMenu />} />
+          <Route path="/ai-game" element={<AIMenu />} />
           <Route path="/game" element={<GameCanvas />} />
           <Route path="/game-over" element={<GameOver />} />
         </Routes>
