@@ -11,7 +11,7 @@ const ScoreBoard = ({
   if (player1Score === 9 || player2Score === 9) {
     setTimeout(() => {
       navigate("/game-over", {
-        state: { winner: player1Score === 9 ? player1Name : player2Name },
+        state: { winner: player1Score === 7 ? player1Name : player2Name },
       });
     }, 2000);
   }

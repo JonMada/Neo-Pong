@@ -13,6 +13,9 @@ h1 {
   font-size: 6.4em;
   text-align: center;
   text-shadow: 0 0 15px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.8);
+  margin: 0;
+  margin-top: 60px;
+  margin-bottom: 30px;
 }
 
 form {
@@ -26,6 +29,31 @@ form {
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(255, 0, 255, 0.7);
   backdrop-filter: blur(10px);
   font-size: 1.9em;
+
+  .ia-button {
+    margin: 50px 10px 0 10px;
+    font-size: 1.3em;
+    background-color: rgba(0, 255, 255, 0.8);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: none;
+    text-shadow: 0 0 10px rgba(255, 0, 255, 1);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 1);
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background-color: rgba(255, 0, 255, 1);
+    box-shadow: 0 0 25px rgba(255, 0, 255, 1);
+    transform: scale(1.1);
+  }
+
+  button:active {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    transform: scale(0.95);
+  }
 }
 
 .input-player {

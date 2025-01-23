@@ -7,11 +7,24 @@ const AIMenu = () => {
   const [difficulty, setDifficulty] = useState("normal"); // Dificultad seleccionada
   const navigate = useNavigate();
 
-  // Función para generar un color aleatorio en formato hexadecimal
+  // Función para generar un color aleatorio
   const getRandomColor = () => {
-    const randomColor = `#${Math.floor(Math.random() * 16777215)
+    const minBrightness = 128;
+    const red = Math.floor(
+      Math.random() * (256 - minBrightness) + minBrightness
+    );
+    const green = Math.floor(
+      Math.random() * (256 - minBrightness) + minBrightness
+    );
+    const blue = Math.floor(
+      Math.random() * (256 - minBrightness) + minBrightness
+    );
+
+    // Convertir a formato hexadecimal
+    const randomColor = `#${red.toString(16).padStart(2, "0")}${green
       .toString(16)
-      .padStart(6, "0")}`;
+      .padStart(2, "0")}${blue.toString(16).padStart(2, "0")}`;
+
     return randomColor;
   };
 
@@ -87,7 +100,9 @@ const AIMenu = () => {
           </div>
         </div>
 
-        <button type="submit">Start Match</button>
+        <button type="submit" className="ia-button">
+          Start Match
+        </button>
       </form>
     </div>
   );

@@ -23,45 +23,37 @@ const GameCanvas = () => {
   const canvasWidth = 800;
   const canvasHeight = 400;
 
-  const ballSpeed = 2.5;
-  const speedIncrementFactor = 2.5;
-  const maxSpeed = 160;
-
   const particles = useRef([]);
 
   const [pulseAlpha, setPulseAlpha] = useState(1);
   const [pulseDirection, setPulseDirection] = useState(0.01);
 
-  // Ajustar la velocidad de la IA según la dificultad seleccionada
-  const aiSpeed = difficulty === "easy" ? 2 : difficulty === "normal" ? 3 : 6;
-
-  const normalizeSpeed = (dx, dy, speed) => {
-    const magnitude = Math.sqrt(dx * dx + dy * dy);
-    return { dx: (dx / magnitude) * speed, dy: (dy / magnitude) * speed };
-  };
-
-  // Control de las teclas de Player 1 (usando 'W' y 'S')
+  // Control de las teclas de Player 1
   const handleKeyDownPlayer1 = (e) => {
-    const step = 45;
-    if ((e.key === "w" || e.key === "W") && player1Y.current > 0)
-      player1Y.current -= step;
-    if (
-      (e.key === "s" || e.key === "S") &&
-      player1Y.current < canvasHeight - paddleHeight
-    )
-      player1Y.current += step;
+    const step = 60;
+    if (e.key === "w" || e.key === "W") {
+      player1Y.current = Math.max(0, player1Y.current - step);
+    }
+    if (e.key === "s" || e.key === "S") {
+      player1Y.current = Math.min(
+        canvasHeight - paddleHeight,
+        player1Y.current + step
+      );
+    }
   };
 
-  // Control de las teclas de Player 2 (usando flechas)
+  // Control de las teclas de Player 1
   const handleKeyDownPlayer2 = (e) => {
     const step = 45;
-    if ((e.key === "ArrowUp" || e.key === "Up") && player2Y.current > 0)
-      player2Y.current -= step;
-    if (
-      (e.key === "ArrowDown" || e.key === "Down") &&
-      player2Y.current < canvasHeight - paddleHeight
-    )
-      player2Y.current += step;
+    if (e.key === "ArrowUp" || e.key === "Up") {
+      player2Y.current = Math.max(0, player2Y.current - step);
+    }
+    if (e.key === "ArrowDown" || e.key === "Down") {
+      player2Y.current = Math.min(
+        canvasHeight - paddleHeight,
+        player2Y.current + step
+      );
+    }
   };
 
   // useEffect para agregar y remover los listeners de las teclas
@@ -81,7 +73,7 @@ const GameCanvas = () => {
         window.removeEventListener("keydown", handleKeyDownPlayer2);
       }
     };
-  }, [showGoalAnimation, ballInMiddle, player2.name]); // Asegúrate de incluir player2.name como dependencia
+  }, [showGoalAnimation, ballInMiddle, player2.name]);
 
   //CountDown
 
@@ -109,9 +101,10 @@ const GameCanvas = () => {
         dy: 0,
       };
       setTimeout(() => {
-        ball.current.dx = 2; // Asigna velocidad inicial después de que termina el countdown
-        ball.current.dy = 1.5;
-      }, 50); // Pequeño retraso para asegurar que el countdown haya desaparecido
+        const direction = Math.random() < 0.5 ? -1 : 1;
+        ball.current.dx = direction * 2;
+        ball.current.dy = 1.5; // Mantén la velocidad en Y constante
+      }, 50);
     }, 4000);
 
     return () => {
@@ -230,7 +223,7 @@ const GameCanvas = () => {
             8
           );
 
-          gradient.addColorStop(0, "rgba(7, 34, 237, 1)");
+          gradient.addColorStop(0, "rgb(7, 187, 237)");
           gradient.addColorStop(1, "rgba(255, 0, 0, 0.3)");
 
           context.beginPath();
@@ -257,11 +250,11 @@ const GameCanvas = () => {
           y: y,
           dx: Math.random() * 4 - 2, // Velocidad aleatoria para las partículas
           dy: Math.random() * 4 - 2,
-          size: Math.random() * 2.5 + 1, // Tamaño más grande de partículas
+          size: Math.random() * 2.5 + 1, // Tamaño partículas
           color: `hsl(${Math.random() * 180 + 180}, 100%, ${
             Math.random() * 40 + 30
           }%)`,
-          life: Math.random() * 30 + 30, // Vida más larga para las partículas
+          life: Math.random() * 30 + 30, // Vida partículas
         });
       }
     };
@@ -297,37 +290,64 @@ const GameCanvas = () => {
       x += dx;
       y += dy;
 
-      if (y - 8 <= 0 || y + 8 >= canvasHeight) {
-        dy = -dy;
-        createParticles(x, y); // Crear partículas en colisión con las paredes
+      if (y - 8 <= 0) {
+        y = 8;
+        dy = Math.abs(dy);
+        createParticles(x, y);
+      }
+
+      if (y + 8 >= canvasHeight) {
+        y = canvasHeight - 8;
+        dy = -Math.abs(dy);
+        createParticles(x, y);
       }
 
       // Colisión con la pala del jugador 1 (jugador)
       if (
-        x - 8 <= 20 &&
+        x - 8 <= 20 && // Golpea el lado izquierdo
         y >= player1Y.current &&
         y <= player1Y.current + paddleHeight
       ) {
-        dx = -dx;
-        const newSpeed = Math.min(ballSpeed * speedIncrementFactor, maxSpeed);
-        const normalized = normalizeSpeed(dx, dy, newSpeed);
-        dx = normalized.dx;
-        dy = normalized.dy;
-        createParticles(x, y); // Crear partículas en colisión con la pala
+        // Cálculo de la posición de impacto relativa
+        const paddleCenter = player1Y.current + paddleHeight / 2;
+        const relativeImpact = (y - paddleCenter) / (paddleHeight / 2); // Normalizado [-1, 1]
+
+        // Ángulo máximo de rebote
+        const maxBounceAngle = 60 * (Math.PI / 180); // Máximo en radianes
+        const bounceAngle = relativeImpact * maxBounceAngle; // Ángulo del rebote
+
+        // Mantener la velocidad constante tras el rebote
+        const speed = Math.sqrt(dx * dx + dy * dy) * 1.05; // Incremento ligero en la velocidad
+
+        // Nuevas componentes de la velocidad
+        dx = Math.abs(speed * Math.cos(bounceAngle)); // Siempre positivo hacia la derecha
+        dy = speed * Math.sin(bounceAngle);
+
+        createParticles(x, y); // Animación en la colisión
       }
 
       // Colisión con la pala del jugador 2 (IA)
       if (
-        x + 8 >= canvasWidth - 20 &&
+        x + 8 >= canvasWidth - 20 && // Golpea el lado derecho
         y >= player2Y.current &&
         y <= player2Y.current + paddleHeight
       ) {
-        dx = -dx;
-        const newSpeed = Math.min(ballSpeed * speedIncrementFactor, maxSpeed);
-        const normalized = normalizeSpeed(dx, dy, newSpeed);
-        dx = normalized.dx;
-        dy = normalized.dy;
-        createParticles(x, y); // Crear partículas en colisión con la pala
+        // Cálculo de la posición de impacto relativa
+        const paddleCenter = player2Y.current + paddleHeight / 2;
+        const relativeImpact = (y - paddleCenter) / (paddleHeight / 2);
+
+        // Ángulo máximo de rebote
+        const maxBounceAngle = 60 * (Math.PI / 180); // Máximo en radianes
+        const bounceAngle = relativeImpact * maxBounceAngle; // Ángulo del rebote
+
+        // Mantener la velocidad constante tras el rebote
+        const speed = Math.sqrt(dx * dx + dy * dy) * 1.05; // Incremento ligero en la velocidad
+
+        // Nuevas componentes de la velocidad
+        dx = -Math.abs(speed * Math.cos(bounceAngle)); // Siempre negativo hacia la izquierda
+        dy = speed * Math.sin(bounceAngle);
+
+        createParticles(x, y); // Animación en la colisión
       }
 
       if ((x - 8 <= 0 || x + 8 >= canvasWidth) && !goalLock) {
@@ -387,83 +407,100 @@ const GameCanvas = () => {
       });
 
       updateBall();
-      aiMovement(); // Movimiento de la IA
+      aiMovement();
       drawGame();
       updateParticles(context);
     };
 
-    let lastMoveTime = 0; // Variable para el control de tiempo de la IA
+    let lastMoveTime = 0;
+
+    let smoothedTargetY = 0;
+
+    //Movimiento de la IA
 
     const aiMovement = () => {
-      // Evitar el movimiento si la pelota está en el medio o está detenida
       if (ballInMiddle || ball.current.dy === 0 || player2.name !== "AI") {
         return;
       }
 
-      // Configuración de la velocidad base y margen de error según la dificultad
       const difficultySettings = {
         hard: {
-          speedMultiplier: 4.0,
-          errorMargin: 0.1,
-          reactionDelay: 0.2,
+          speedMultiplier: 1.3,
+          errorMargin: 9,
+          reactionDelay: 10,
         },
         normal: {
-          speedMultiplier: 3.2,
-          errorMargin: 1.5,
-          reactionDelay: 1.5,
+          speedMultiplier: 0.9,
+          errorMargin: 15,
+          reactionDelay: 15,
         },
         easy: {
-          speedMultiplier: 3,
-          errorMargin: 2,
-          reactionDelay: 2,
+          speedMultiplier: 0.2,
+          errorMargin: 30,
+          reactionDelay: 25,
         },
       };
 
-      // Establecer la velocidad base, margen de error y retraso de reacción según la dificultad
-      const { speedMultiplier, errorMargin, reactionDelay } =
-        difficultySettings[difficulty];
+      const { errorMargin, reactionDelay } = difficultySettings[difficulty];
 
-      // Control de la reacción de la IA con un retraso
       if (Date.now() - lastMoveTime < reactionDelay) {
-        return; // La IA espera según el retraso de reacción antes de moverse
+        return;
       }
-      lastMoveTime = Date.now(); // Actualiza el tiempo de la última acción
+      lastMoveTime = Date.now();
 
-      // Predicción de la posición futura de la pelota
-      const predictionFactor = difficulty === "hard" ? 1 : 0.8; // IA más precisa en dificultad alta
+      const predictionFactor =
+        difficulty === "hard" ? 1 : difficulty === "normal" ? 0.85 : 0.7;
       const predictedBallY =
-        ball.current.y + ball.current.dy * predictionFactor;
+        ball.current.y +
+        (ball.current.dy / Math.abs(ball.current.dy)) *
+          Math.min(Math.abs(ball.current.dy) * predictionFactor, canvasHeight);
 
-      // Introducimos algo de "ruido" o aleatoriedad para hacer el movimiento más humano
-      let targetY =
-        predictedBallY + (Math.random() * errorMargin - errorMargin / 2); // Margen de error aleatorio
+      const paddleZones = {
+        top: -paddleHeight * 0.35,
+        bottom: paddleHeight * 0.35,
+      };
 
-      // Calcular la distancia a la que la IA tiene que moverse
-      const distanceToTarget = Math.abs(player2Y.current - targetY);
+      const zonePreference =
+        Math.random() < 0.4 ? "top" : Math.random() < 0.8 ? "bottom" : "center";
 
-      // Factor de velocidad dinámico dependiendo de la distancia (más rápido cerca de la pelota)
-      const speedFactor = Math.max(0.2, 1 - distanceToTarget / canvasHeight);
+      const zoneOffset = paddleZones[zonePreference] || 0;
 
-      // Reducimos la aleatoriedad en dificultades altas
-      const randomSpeedFactor =
+      const borderBias =
         difficulty === "hard"
-          ? Math.random() * 0.05 + 0.95 // Factor aleatorio entre 0.95 y 1
+          ? Math.random() * 5 - 2.5
           : difficulty === "normal"
-          ? Math.random() * 0.1 + 0.9 // Menos aleatoriedad en "normal"
-          : Math.random() * 0.3 + 0.7; // Mayor aleatoriedad en "easy"
+          ? Math.random() * 10 - 5
+          : Math.random() * 15 - 7.5;
 
-      const speed = aiSpeed * speedMultiplier * speedFactor * randomSpeedFactor;
+      //Desviaciones según niveles de dificultad
+      const deviation =
+        difficulty === "hard"
+          ? Math.random() < 0.2
+            ? 5
+            : -5
+          : difficulty === "normal"
+          ? Math.random() < 0.5
+            ? 15
+            : -15
+          : Math.random() < 0.5
+          ? 30
+          : -30;
 
-      // Movimiento más humano: la IA no siempre se mueve directamente al objetivo
-      if (player2Y.current < targetY) {
-        // Si la IA está por debajo del objetivo, intenta moverse hacia abajo
-        player2Y.current += speed * (Math.random() * 0.2 + 0.8); // Movimiento más directo en dificultades altas
-      } else if (player2Y.current > targetY) {
-        // Si la IA está por encima del objetivo, intenta moverse hacia arriba
-        player2Y.current -= speed * (Math.random() * 0.2 + 0.8); // Movimiento más directo en dificultades altas
-      }
+      const targetYUnsmoothed =
+        predictedBallY -
+        paddleHeight / 2 +
+        zoneOffset +
+        borderBias +
+        (Math.random() * errorMargin - errorMargin / 2) +
+        deviation; // Aplicar desviación adicional
 
-      // Aseguramos que la IA no se mueva fuera de los límites de la pantalla
+      // Suavizar el objetivo
+      smoothedTargetY = smoothedTargetY * 0.6 + targetYUnsmoothed * 0.4;
+
+      // Movimiento suave hacia el objetivo suavizado
+      player2Y.current += (smoothedTargetY - player2Y.current) * 0.05;
+
+      // Limitar movimiento dentro de los límites
       player2Y.current = Math.max(
         0,
         Math.min(canvasHeight - paddleHeight, player2Y.current)
