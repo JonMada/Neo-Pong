@@ -400,7 +400,7 @@ const GameCanvas = () => {
 
     const gameLoop = () => {
       if (showGoalAnimation) {
-        drawPattern();
+        drawGame();
         return;
       }
 
