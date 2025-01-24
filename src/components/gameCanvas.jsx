@@ -399,7 +399,10 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
-      if (showGoalAnimation) return;
+      if (showGoalAnimation) {
+        drawPattern();
+        return;
+      }
 
       setPulseAlpha((prevAlpha) => {
         let newAlpha = prevAlpha + pulseDirection;
