@@ -124,6 +124,9 @@ const GameCanvas = () => {
       const spacing = 30;
       const brightProbability = 0.1;
 
+      // Limpiar el canvas antes de dibujar el patrón
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
       for (let y = 0; y < canvas.height; y += spacing) {
         for (let x = 0; x < canvas.width; x += spacing) {
           context.beginPath();
