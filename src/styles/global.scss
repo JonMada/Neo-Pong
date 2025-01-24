@@ -36,7 +36,7 @@ body {
 
 .goal-animation {
   position: absolute;
-  top: 58%;
+  top: 59%;
   left: 50.5%;
   transform: translate(-50%, -50%);
   color: #ff007f; /* Color del texto (puedes probar con blanco #fff para mayor nitidez) */
@@ -50,6 +50,7 @@ body {
   z-index: 99999;
   opacity: 1; /* Aumentar la opacidad para mayor nitidez */
   animation-delay: 0s; /* Sin retraso en la animación */
+  background-color: rgba(0, 0, 0, 0);
 }
 
 @keyframes fadeBlink {
