@@ -390,7 +390,7 @@ const GameCanvas = () => {
         setTimeout(() => {
           setShowGoalAnimation(false);
           setGoalLock(false);
-        }, 3000);
+        }, 10000);
         return;
       }
 
