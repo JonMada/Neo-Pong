@@ -47,7 +47,7 @@ body {
     /* Sombras suaves para mantener nitidez */ 0 0 10px #ff007f,
     0 0 15px #ff007f, 0 0 20px #ff007f;
   animation: fadeBlink 3s ease-in-out infinite;
-  z-index: 9999;
+  z-index: 99999;
   opacity: 1; /* Aumentar la opacidad para mayor nitidez */
   animation-delay: 0s; /* Sin retraso en la animación */
 }
