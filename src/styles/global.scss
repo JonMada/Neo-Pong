@@ -16,24 +16,6 @@ body {
   width: 800px;
 }
 
-@keyframes fadeBlink {
-  0% {
-    opacity: 0.6;
-    transform: translate(-50%, -50%) scale(1); /* Reducido al inicio */
-    color: #ff007f; /* Color inicial */
-  }
-  50% {
-    opacity: 1; /* Al 50%, el texto es totalmente visible */
-    transform: translate(-50%, -50%) scale(1.2); /* Aumenta el tamaño para crear el pulso */
-    color: #00d4ff; /* Cambia el color para mayor dinamismo */
-  }
-  100% {
-    opacity: 0.6;
-    transform: translate(-50%, -50%) scale(1); /* Vuelve al tamaño normal */
-    color: #ff007f; /* Retorna al color original */
-  }
-}
-
 .goal-animation {
   position: absolute;
   top: 59%;
@@ -53,24 +35,6 @@ body {
   background-color: rgba(0, 0, 0, 0);
 }
 
-@keyframes fadeBlink {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-    color: #ff007f; /* Color inicial */
-  }
-  50% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2);
-    color: #00d4ff; /* Cambiar color en el medio de la animación */
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-    color: #ff007f; /* Color final */
-  }
-}
-
 .goal-animation:after {
   content: "";
   position: absolute;
@@ -79,7 +43,7 @@ body {
   width: 100%;
   height: 100%;
 
-  z-index: -1;
+  z-index: 99999;
   pointer-events: none;
 }
 
