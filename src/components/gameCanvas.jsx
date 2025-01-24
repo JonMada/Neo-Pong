@@ -383,14 +383,14 @@ const GameCanvas = () => {
           ball.current = {
             ...ball.current,
             dx: x - 8 <= 0 ? -2 : 2,
-            dy: 1.3,
+            dy: 2,
           };
         }, 3000);
 
         setTimeout(() => {
           setShowGoalAnimation(false);
           setGoalLock(false);
-        }, 10000);
+        }, 3000);
         return;
       }
 
