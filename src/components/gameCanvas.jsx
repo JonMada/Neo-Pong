@@ -102,8 +102,8 @@ const GameCanvas = () => {
       };
       setTimeout(() => {
         const direction = Math.random() < 0.5 ? -1 : 1;
-        ball.current.dx = direction * 2;
-        ball.current.dy = 1.5; // Mantén la velocidad en Y constante
+        ball.current.dx = direction * 3;
+        ball.current.dy = 2; // Mantén la velocidad en Y constante
       }, 50);
     }, 4000);
 
