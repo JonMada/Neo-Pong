@@ -109,8 +109,8 @@ const GameCanvas = () => {
       };
       setTimeout(() => {
         const direction = Math.random() < 0.5 ? -1 : 1;
-        ball.current.dx = direction * 1.5;
-        ball.current.dy = 1.5; // Mantén la velocidad en Y constante
+        ball.current.dx = direction * 0.5;
+        ball.current.dy = 0.5; // Mantén la velocidad en Y constante
       }, 50);
     }, 4000);
 
@@ -288,6 +288,8 @@ const GameCanvas = () => {
       });
     };
 
+    //Gestion de la pelota
+
     const updateBall = () => {
       if (countdown !== null) return;
 
@@ -401,8 +403,8 @@ const GameCanvas = () => {
           ball.current = {
             x: canvasWidth / 2,
             y: canvasHeight / 2,
-            dx: direction * 1.5, // Ajusta la velocidad horizontal
-            dy: 1.5, // Asegúrate de que la pelota tenga velocidad vertical
+            dx: direction * 0.5, // Ajusta la velocidad horizontal
+            dy: 0.5, // Asegúrate de que la pelota tenga velocidad vertical
             trail: [],
           };
         }, 3500); // Tiempo de espera después del gol
