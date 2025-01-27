@@ -1,0 +1,36 @@
+/* Contenedor principal */
+.goal-animation-container {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 999;
+}
+
+/* Texto animado */
+.goal-animation-text {
+  position: absolute;
+  top: 40%;
+  left: 42.4%;
+  transform: translate(-50%, -50%);
+  color: #ff007f;
+  font-size: 6.5em;
+  font-weight: bold;
+  text-shadow: 0 0 20px #00d4ff, 0 0 30px #00d4ff, 0 0 40px #00d4ff,
+    0 0 50px #ff007f, 0 0 50px #ff007f;
+  animation: fadeBlink 3s ease-in-out infinite;
+  z-index: 9999;
+}
+
+/* Animación del texto */
+@keyframes fadeBlink {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}

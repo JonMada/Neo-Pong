@@ -17,38 +17,6 @@ body {
   background: transparent;
 }
 
-.goal-animation {
-  position: absolute;
-  top: 59%;
-  left: 50.5%;
-  transform: translate(-50%, -50%);
-  color: #ff007f; /* Color del texto (puedes probar con blanco #fff para mayor nitidez) */
-  font-size: 1.2rem;
-  font-weight: 400;
-  text-align: center;
-  text-shadow: 0 0 5px #ff007f,
-    /* Sombras suaves para mantener nitidez */ 0 0 10px #ff007f,
-    0 0 15px #ff007f, 0 0 20px #ff007f;
-  animation: fadeBlink 3s ease-in-out infinite;
-  z-index: 99999;
-  opacity: 1; /* Aumentar la opacidad para mayor nitidez */
-  animation-delay: 0s; /* Sin retraso en la animación */
-  background-color: transparent;
-}
-
-/* Animación de parpadeo y movimiento vertical */
-@keyframes fadeBlink {
-  0%,
-  100% {
-    opacity: 0; /* Empieza y termina con opacidad 0 */
-    transform: translate(-50%, calc(-50% - 10px)); /* Ligeramente más arriba */
-  }
-  50% {
-    opacity: 1; /* Máxima opacidad */
-    transform: translate(-50%, -50%); /* Centrado */
-  }
-}
-
 .audio-player {
   position: absolute;
   right: 40px; /* Distancia desde el margen derecho */

@@ -400,7 +400,6 @@ const GameCanvas = () => {
 
     const gameLoop = () => {
       if (showGoalAnimation) {
-        drawGame();
         return;
       }
 
@@ -523,8 +522,9 @@ const GameCanvas = () => {
 
       {/* Goal Animation */}
       {showGoalAnimation && (
-        <div className="goal-animation">
-          <h1>GOAL!</h1>
+        <div className="goal-animation-container">
+          {/* Texto animado */}
+          <h1 className="goal-animation-text">GOAL!</h1>
         </div>
       )}
 
