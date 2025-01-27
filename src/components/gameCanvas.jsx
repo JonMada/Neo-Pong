@@ -360,8 +360,6 @@ const GameCanvas = () => {
         setGoalLock(true);
         setShowGoalAnimation(true);
 
-        const ballDirection = x - 8 <= 0 ? 1 : -1;
-
         if (x - 8 <= 0) {
           setScore((prevScore) => ({
             ...prevScore,
@@ -385,8 +383,14 @@ const GameCanvas = () => {
         setBallInMiddle(true);
         setTimeout(() => {
           setBallInMiddle(false);
-          ball.current.dx = ballDirection * 2; // Velocidad horizontal según dirección
-          ball.current.dy = 1.5; // Velocidad vertical aleatoria
+          const direction = x - 8 <= 0 ? 1 : -1; // Direccion del gol
+          ball.current = {
+            x: canvasWidth / 2,
+            y: canvasHeight / 2,
+            dx: direction * 2, // Ajusta la velocidad horizontal
+            dy: 1.5, // Asegúrate de que la pelota tenga velocidad vertical
+            trail: [],
+          };
         }, 3200); // Tiempo de espera después del gol
 
         setTimeout(() => {
@@ -401,10 +405,15 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
+      // Si estamos en animación de gol o la pelota está en el medio, no actualizamos el juego.
+      if (showGoalAnimation || ballInMiddle) {
+        return;
+      }
+
       drawGame(); // Dibuja el fondo
-      updateBall(); // Actualiza la pelota, pero internamente puede detenerse si hay gol
+      updateBall(); // Actualiza la pelota, pero solo si no hay animación de gol ni está en el medio
       updateParticles(context); // Las partículas deben actualizarse siempre
-      aiMovement(); // Movimiento de la IA, incluso si hay animación de go
+      aiMovement(); // Movimiento de la IA, incluso si hay animación de gol
     };
 
     let lastMoveTime = 0;
