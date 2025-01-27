@@ -360,6 +360,8 @@ const GameCanvas = () => {
         setGoalLock(true);
         setShowGoalAnimation(true);
 
+        const ballDirection = x - 8 <= 0 ? 1 : -1;
+
         if (x - 8 <= 0) {
           setScore((prevScore) => ({
             ...prevScore,
@@ -383,12 +385,9 @@ const GameCanvas = () => {
         setBallInMiddle(true);
         setTimeout(() => {
           setBallInMiddle(false);
-          ball.current = {
-            ...ball.current,
-            dx: x - 8 <= 0 ? -2 : 2,
-            dy: 1.3,
-          };
-        }, 3200);
+          ball.current.dx = ballDirection * 2; // Velocidad horizontal según dirección
+          ball.current.dy = 1.5; // Velocidad vertical aleatoria
+        }, 3200); // Tiempo de espera después del gol
 
         setTimeout(() => {
           setShowGoalAnimation(false);
@@ -403,7 +402,6 @@ const GameCanvas = () => {
 
     const gameLoop = () => {
       drawGame(); // Dibuja el fondo
-
       updateBall(); // Actualiza la pelota, pero internamente puede detenerse si hay gol
       updateParticles(context); // Las partículas deben actualizarse siempre
       aiMovement(); // Movimiento de la IA, incluso si hay animación de go
