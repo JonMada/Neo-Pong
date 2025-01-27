@@ -122,6 +122,7 @@ const GameCanvas = () => {
     const drawPattern = () => {
       const spacing = 30;
       const brightProbability = 0.1;
+      const time = Date.now(); // Usaremos el tiempo para controlar el parpadeo
 
       // Limpiar el canvas antes de dibujar el patrón
       context.clearRect(0, 0, canvas.width, canvas.height);
@@ -129,16 +130,24 @@ const GameCanvas = () => {
       for (let y = 0; y < canvas.height; y += spacing) {
         for (let x = 0; x < canvas.width; x += spacing) {
           context.beginPath();
+
           const isBright = Math.random() < brightProbability;
+
+          // Crear un efecto de parpadeo basado en el tiempo
+          const brightnessFactor =
+            Math.sin(time / 500 + (x + y) / 100) * 0.5 + 0.5; // Esto controla el parpadeo de las luces
+          const opacity = Math.random() < 0.5 ? 0.5 : brightnessFactor; // Ajusta la opacidad dependiendo del parpadeo
 
           if (isBright) {
             context.arc(x, y, 3, 0, Math.PI * 2);
-            context.fillStyle = "rgba(7, 34, 237, 0.9)";
-            context.shadowColor = "rgba(87, 102, 213, 0.9)";
+            context.fillStyle = `rgba(7, 34, 237, ${opacity})`; // Aquí se usa la opacidad para el parpadeo
+            context.shadowColor = `rgba(87, 102, 213, ${opacity})`;
             context.shadowBlur = 10;
           } else {
             context.arc(x, y, 1.5, 0, Math.PI * 2);
-            context.fillStyle = "rgba(200, 200, 200, 0.5)";
+            context.fillStyle = `rgba(200, 200, 200, ${
+              0.3 + brightnessFactor * 0.7
+            })`; // Efecto más sutil para las luces apagadas
             context.shadowColor = "transparent";
             context.shadowBlur = 0;
           }
@@ -409,6 +418,8 @@ const GameCanvas = () => {
         drawGame();
         updateParticles(context);
         aiMovement();
+        handleKeyDownPlayer1();
+        handleKeyDownPlayer2();
         return;
       }
 
