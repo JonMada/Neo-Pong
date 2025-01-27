@@ -551,7 +551,7 @@ const GameCanvas = () => {
             margin: "20px auto",
             display: "block",
             backgroundColor: "#000",
-            zIndex: 5 /* Asegúrate de que el canvas tenga un z-index más alto que la animación */,
+            zIndex: 5,
           }}
         />
       </div>
