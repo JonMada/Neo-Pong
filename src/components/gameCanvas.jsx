@@ -383,7 +383,7 @@ const GameCanvas = () => {
             dx: x - 8 <= 0 ? -2 : 2,
             dy: 1.3,
           };
-        }, 3000);
+        }, 3200);
 
         setTimeout(() => {
           setShowGoalAnimation(false);
