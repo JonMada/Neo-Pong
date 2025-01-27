@@ -381,22 +381,24 @@ const GameCanvas = () => {
         };
 
         setBallInMiddle(true);
-        setTimeout(() => {
-          setBallInMiddle(false);
-          const direction = x - 8 <= 0 ? 1 : -1; // Direccion del gol
-          ball.current = {
-            x: canvasWidth / 2,
-            y: canvasHeight / 2,
-            dx: direction * 2, // Ajusta la velocidad horizontal
-            dy: 1.5, // Asegúrate de que la pelota tenga velocidad vertical
-            trail: [],
-          };
-        }, 3200); // Tiempo de espera después del gol
 
         setTimeout(() => {
           setShowGoalAnimation(false);
           setGoalLock(false);
         }, 3000);
+
+        setTimeout(() => {
+          setBallInMiddle(false);
+          const direction = x - 8 <= 0 ? -1 : 1; // Direccion del gol
+          ball.current = {
+            x: canvasWidth / 2,
+            y: canvasHeight / 2,
+            dx: direction * 1.5, // Ajusta la velocidad horizontal
+            dy: 1.5, // Asegúrate de que la pelota tenga velocidad vertical
+            trail: [],
+          };
+        }, 3500); // Tiempo de espera después del gol
+
         return;
       }
 
