@@ -405,6 +405,7 @@ const GameCanvas = () => {
       drawGame();
       updateParticles(context);
     };
+
     //Movimiento de la IA
 
     let lastMoveTime = 0;
