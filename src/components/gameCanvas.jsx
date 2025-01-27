@@ -398,12 +398,12 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
+      drawGame();
+
       if (showGoalAnimation) return;
 
       updateBall();
       aiMovement();
-      drawGame();
-      updateParticles(context);
     };
 
     //Movimiento de la IA
