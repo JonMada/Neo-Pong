@@ -405,13 +405,12 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
-      // Si estamos en animación de gol o la pelota está en el medio, no actualizamos el juego.
+      drawGame(); // Dibuja el fondo
+      updateBall(); // Actualiza la pelota, pero solo si no hay animación de gol ni está en el medio
       if (showGoalAnimation || ballInMiddle) {
         return;
       }
 
-      drawGame(); // Dibuja el fondo
-      updateBall(); // Actualiza la pelota, pero solo si no hay animación de gol ni está en el medio
       updateParticles(context); // Las partículas deben actualizarse siempre
       aiMovement(); // Movimiento de la IA, incluso si hay animación de gol
     };
