@@ -526,7 +526,7 @@ const GameCanvas = () => {
   }, [score, showGoalAnimation, ballInMiddle]);
 
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       {/* CountDown Animation*/}
       {countdown !== null && <div className="countdown">{countdown}</div>}
 
@@ -541,15 +541,20 @@ const GameCanvas = () => {
         player1Score={score.player1}
         player2Score={score.player2}
       />
-      <canvas
-        ref={canvasRef}
-        className="canvas-container"
-        style={{
-          margin: "20px auto",
-          display: "block",
-          backgroundColor: "#000",
-        }}
-      />
+
+      {/* Contenedor del canvas */}
+      <div style={{ position: "relative", zIndex: 20 }}>
+        <canvas
+          ref={canvasRef}
+          className="canvas-container"
+          style={{
+            margin: "20px auto",
+            display: "block",
+            backgroundColor: "#000",
+            zIndex: 5 /* Asegúrate de que el canvas tenga un z-index más alto que la animación */,
+          }}
+        />
+      </div>
       <Instrucciones player1Name={player1.name} player2Name={player2.name} />
     </div>
   );
