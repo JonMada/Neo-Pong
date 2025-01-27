@@ -384,7 +384,7 @@ const GameCanvas = () => {
             dx: x - 8 <= 0 ? -2 : 2,
             dy: 1.3,
           };
-        }, 3000);
+        }, 3500);
 
         setTimeout(() => {
           setShowGoalAnimation(false);
@@ -398,10 +398,12 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
+      if (showGoalAnimation) {
+        drawGame();
+        return;
+      }
+
       drawGame();
-
-      if (showGoalAnimation) return;
-
       updateBall();
       aiMovement();
     };
