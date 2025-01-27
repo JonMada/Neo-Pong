@@ -399,22 +399,22 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
-      if (showGoalAnimation) {
-        return;
-      }
-
-      setPulseAlpha((prevAlpha) => {
-        let newAlpha = prevAlpha + pulseDirection;
-        if (newAlpha <= 0.1 || newAlpha >= 1) {
-          setPulseDirection(-pulseDirection);
-        }
-        return newAlpha;
-      });
-
-      updateBall();
-      aiMovement();
       drawGame();
-      updateParticles(context);
+
+      // Solo actualiza la pelota y las partículas si no hay animación de gol
+      if (!showGoalAnimation) {
+        setPulseAlpha((prevAlpha) => {
+          let newAlpha = prevAlpha + pulseDirection;
+          if (newAlpha <= 0.1 || newAlpha >= 1) {
+            setPulseDirection(-pulseDirection);
+          }
+          return newAlpha;
+        });
+
+        updateBall();
+        aiMovement();
+        updateParticles(context);
+      }
     };
 
     let lastMoveTime = 0;
