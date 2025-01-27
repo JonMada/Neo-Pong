@@ -391,7 +391,7 @@ const GameCanvas = () => {
             dy: 1.5, // Asegúrate de que la pelota tenga velocidad vertical
             trail: [],
           };
-        }, 3200); // Tiempo de espera después del gol
+        }, 4000); // Tiempo de espera después del gol
 
         setTimeout(() => {
           setShowGoalAnimation(false);
@@ -406,6 +406,9 @@ const GameCanvas = () => {
 
     const gameLoop = () => {
       if (showGoalAnimation || ballInMiddle) {
+        drawGame();
+        updateParticles(context);
+        aiMovement();
         return;
       }
 
