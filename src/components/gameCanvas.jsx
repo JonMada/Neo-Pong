@@ -405,15 +405,14 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
-      drawGame();
-      updateParticles(context);
-      aiMovement();
-
       if (showGoalAnimation || ballInMiddle) {
         return;
       }
 
       updateBall();
+      drawGame();
+      updateParticles(context);
+      aiMovement();
     };
 
     let lastMoveTime = 0;
