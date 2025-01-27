@@ -406,26 +406,20 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
-      drawGame();
+      drawGame(); // Dibuja el fondo
 
-      // Solo actualiza la pelota, las partículas y la IA si no hay animación de gol
+      // Actualización de la pelota solo si no estamos en animación de gol
       if (!showGoalAnimation) {
-        setPulseAlpha((prevAlpha) => {
-          let newAlpha = prevAlpha + pulseDirection;
-          if (newAlpha <= 0.1 || newAlpha >= 1) {
-            setPulseDirection(-pulseDirection);
-          }
-          return newAlpha;
-        });
-
-        // Aquí aseguramos que la pelota no se mueva durante la animación de gol
-        if (!showGoalAnimation) {
-          updateBall(); // Solo actualiza la pelota si no estamos mostrando la animación de "GOAL!"
-        }
-
-        aiMovement();
-        updateParticles(context);
+        updateBall(); // Actualiza la pelota
       }
+
+      aiMovement(); // Movimiento de la IA
+
+      // Mantén las palas controlables incluso durante la animación del gol
+      drawPaddle(10, player1Y.current, player1.color); // Pala del jugador 1
+      drawPaddle(canvasWidth - 20, player2Y.current, player2.color); // Pala del jugador 2
+
+      updateParticles(context); // Actualiza las partículas (luces)
     };
 
     let lastMoveTime = 0;
