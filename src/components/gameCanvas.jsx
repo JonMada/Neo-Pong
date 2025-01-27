@@ -405,9 +405,9 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
-      drawGame(); // Dibuja el fondo
-      updateParticles(context); // Las partículas deben actualizarse siempre
-      aiMovement(); // Movimiento de la IA, incluso si hay animación de gol
+      drawGame();
+      updateParticles(context);
+      aiMovement();
 
       if (showGoalAnimation || ballInMiddle) {
         return;
