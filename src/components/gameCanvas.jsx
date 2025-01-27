@@ -411,21 +411,26 @@ const GameCanvas = () => {
       }
 
       ball.current = { x, y, dx, dy, trail: ball.current.trail };
-      requestAnimationFrame(gameLoop);
     };
 
     const gameLoop = () => {
-      // Si estamos en animación de gol o la pelota está en el medio, no actualizamos el juego.
+      // Siempre redibuja el fondo y las partículas
+      drawGame();
+      updateParticles(context);
+
+      // Si estamos en animación de gol o la pelota está en el medio, no actualizamos el movimiento de la pelota.
       if (showGoalAnimation || ballInMiddle) {
-        drawGame();
         return;
       }
 
-      drawGame(); // Dibuja el fondo
-      updateBall(); // Actualiza la pelota, pero solo si no hay animación de gol ni está en el medio
-      updateParticles(context); // Las partículas deben actualizarse siempre
+      updateBall(); // Solo actualiza la pelota si no hay animación de gol ni está en el medio
       aiMovement(); // Movimiento de la IA, incluso si hay animación de gol
+
+      requestAnimationFrame(gameLoop); // Llama al siguiente frame para continuar la animación
     };
+
+    // Iniciar el bucle de juego
+    requestAnimationFrame(gameLoop);
 
     let lastMoveTime = 0;
 
