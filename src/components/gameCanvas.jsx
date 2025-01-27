@@ -281,7 +281,12 @@ const GameCanvas = () => {
     };
 
     const updateBall = () => {
-      if (countdown !== null || showGoalAnimation) return;
+      if (countdown !== null) return;
+
+      if (showGoalAnimation) {
+        ball.current.dx = 0;
+        ball.current.dy = 0;
+      }
 
       let { x, y, dx, dy } = ball.current;
 
@@ -399,13 +404,9 @@ const GameCanvas = () => {
     const gameLoop = () => {
       drawGame(); // Dibuja el fondo
 
-      if (countdown === null && !showGoalAnimation) {
-        updateBall(); // Solo actualizar la pelota si no hay gol ni countdown
-      }
-
-      updateParticles(context);
-
-      aiMovement(); // Movimiento de la IA
+      updateBall(); // Actualiza la pelota, pero internamente puede detenerse si hay gol
+      updateParticles(context); // Las partículas deben actualizarse siempre
+      aiMovement(); // Movimiento de la IA, incluso si hay animación de go
     };
 
     let lastMoveTime = 0;
