@@ -10,7 +10,7 @@ const GoalAnimation = ({ onAnimationEnd }) => {
         // Llamar a onAnimationEnd cuando termine la animación
         setTimeout(() => {
           onAnimationEnd();
-        }, 2500);
+        }, 2400);
       }, 2500); // La animación dura 2 segundos
 
       return () => clearTimeout(timer);

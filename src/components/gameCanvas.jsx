@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ScoreBoard from "./scoreBoard";
 import Instrucciones from "./instrucciones";
-import GoalAnimation from "./GoalAnimation";
+import GoalAnimation from "./goalAnimation";
 
 const GameCanvas = () => {
   const canvasRef = useRef(null);
