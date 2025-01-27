@@ -406,13 +406,14 @@ const GameCanvas = () => {
 
     const gameLoop = () => {
       drawGame(); // Dibuja el fondo
-      updateBall(); // Actualiza la pelota, pero solo si no hay animación de gol ni está en el medio
+      updateParticles(context); // Las partículas deben actualizarse siempre
+      aiMovement(); // Movimiento de la IA, incluso si hay animación de gol
+
       if (showGoalAnimation || ballInMiddle) {
         return;
       }
 
-      updateParticles(context); // Las partículas deben actualizarse siempre
-      aiMovement(); // Movimiento de la IA, incluso si hay animación de gol
+      updateBall();
     };
 
     let lastMoveTime = 0;
