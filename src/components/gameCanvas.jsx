@@ -369,6 +369,7 @@ const GameCanvas = () => {
           }));
         }
 
+        // Deja la pelota estática
         ball.current = {
           x: canvasWidth / 2,
           y: canvasHeight / 2,
@@ -378,19 +379,25 @@ const GameCanvas = () => {
         };
 
         setBallInMiddle(true);
+
+        // Después de 3.2 segundos (tiempo de animación del gol), reinicia la pelota
         setTimeout(() => {
           setBallInMiddle(false);
+          // Asignar dirección aleatoria y velocidad a la pelota
           ball.current = {
-            ...ball.current,
-            dx: x - 8 <= 0 ? -2 : 2,
+            x: canvasWidth / 2,
+            y: canvasHeight / 2,
+            dx: Math.random() < 0.5 ? -2 : 2,
             dy: 2,
+            trail: [],
           };
-        }, 3000);
+        }, 3200);
 
         setTimeout(() => {
           setShowGoalAnimation(false);
           setGoalLock(false);
         }, 3000);
+
         return;
       }
 
@@ -401,7 +408,7 @@ const GameCanvas = () => {
     const gameLoop = () => {
       drawGame();
 
-      // Solo actualiza la pelota y las partículas si no hay animación de gol
+      // Solo actualiza la pelota, las partículas y la IA si no hay animación de gol
       if (!showGoalAnimation) {
         setPulseAlpha((prevAlpha) => {
           let newAlpha = prevAlpha + pulseDirection;
@@ -411,7 +418,11 @@ const GameCanvas = () => {
           return newAlpha;
         });
 
-        updateBall();
+        // Aquí aseguramos que la pelota no se mueva durante la animación de gol
+        if (!showGoalAnimation) {
+          updateBall(); // Solo actualiza la pelota si no estamos mostrando la animación de "GOAL!"
+        }
+
         aiMovement();
         updateParticles(context);
       }
