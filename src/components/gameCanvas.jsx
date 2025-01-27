@@ -102,8 +102,8 @@ const GameCanvas = () => {
       };
       setTimeout(() => {
         const direction = Math.random() < 0.5 ? -1 : 1;
-        ball.current.dx = direction * 3;
-        ball.current.dy = 2; // Mantén la velocidad en Y constante
+        ball.current.dx = direction * 2;
+        ball.current.dy = 1.5; // Mantén la velocidad en Y constante
       }, 50);
     }, 4000);
 
@@ -287,12 +287,14 @@ const GameCanvas = () => {
 
       let { x, y, dx, dy } = ball.current;
 
+      // Limitar la longitud de la estela (trail) de la pelota
       if (ball.current.trail.length > 40) ball.current.trail.shift();
       ball.current.trail.push({ x, y });
 
       x += dx;
       y += dy;
 
+      // Colisión con los bordes (superior e inferior)
       if (y - 8 <= 0) {
         y = 8;
         dy = Math.abs(dy);
@@ -320,7 +322,7 @@ const GameCanvas = () => {
         const bounceAngle = relativeImpact * maxBounceAngle; // Ángulo del rebote
 
         // Mantener la velocidad constante tras el rebote
-        const speed = Math.sqrt(dx * dx + dy * dy) * 1.05; // Incremento ligero en la velocidad
+        const speed = Math.sqrt(dx * dx + dy * dy); // Incremento ligero en la velocidad
 
         // Nuevas componentes de la velocidad
         dx = Math.abs(speed * Math.cos(bounceAngle)); // Siempre positivo hacia la derecha
@@ -353,10 +355,12 @@ const GameCanvas = () => {
         createParticles(x, y); // Animación en la colisión
       }
 
+      // Verifica si ha pasado un gol (borde izquierdo o derecho)
       if ((x - 8 <= 0 || x + 8 >= canvasWidth) && !goalLock) {
         setGoalLock(true);
         setShowGoalAnimation(true);
 
+        // Actualiza el marcador
         if (x - 8 <= 0) {
           setScore((prevScore) => ({
             ...prevScore,
@@ -369,30 +373,35 @@ const GameCanvas = () => {
           }));
         }
 
-        // Deja la pelota estática
+        // Deja la pelota estática y reinicia
         ball.current = {
           x: canvasWidth / 2,
           y: canvasHeight / 2,
-          dx: 0,
+          dx: 0, // La pelota se detiene
           dy: 0,
           trail: [],
         };
 
         setBallInMiddle(true);
 
-        // Después de 3.2 segundos (tiempo de animación del gol), reinicia la pelota
+        // Reinicia la pelota después de la animación del gol
         setTimeout(() => {
           setBallInMiddle(false);
-          // Asignar dirección aleatoria y velocidad a la pelota
+
+          // Aquí puedes establecer una velocidad constante
+          const initialSpeedX = Math.random() < 0.5 ? -2 : 2; // Velocidad constante de X
+          const initialSpeedY = 1.5; // Velocidad constante de Y
+
           ball.current = {
             x: canvasWidth / 2,
             y: canvasHeight / 2,
-            dx: Math.random() < 0.5 ? -2 : 2,
-            dy: 2,
+            dx: initialSpeedX,
+            dy: initialSpeedY,
             trail: [],
           };
-        }, 3200);
+        }, 3200); // 3.2 segundos después de que el gol es anotado
 
+        // Finaliza la animación del gol
         setTimeout(() => {
           setShowGoalAnimation(false);
           setGoalLock(false);
