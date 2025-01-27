@@ -399,9 +399,6 @@ const GameCanvas = () => {
     const gameLoop = () => {
       drawGame(); // Dibuja el fondo
 
-      drawPaddle(10, player1Y.current, player1.color);
-      drawPaddle(canvasWidth - 20, player2Y.current, player2.color);
-
       if (countdown === null && !showGoalAnimation) {
         updateBall(); // Solo actualizar la pelota si no hay gol ni countdown
       }
