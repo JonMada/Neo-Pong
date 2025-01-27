@@ -122,7 +122,6 @@ const GameCanvas = () => {
     const drawPattern = () => {
       const spacing = 30;
       const brightProbability = 0.1;
-      const time = Date.now();
 
       // Limpiar el canvas antes de dibujar el patrón
       context.clearRect(0, 0, canvas.width, canvas.height);
@@ -130,24 +129,16 @@ const GameCanvas = () => {
       for (let y = 0; y < canvas.height; y += spacing) {
         for (let x = 0; x < canvas.width; x += spacing) {
           context.beginPath();
-
           const isBright = Math.random() < brightProbability;
 
-          // Crear un efecto de parpadeo basado en el tiempo
-          const brightnessFactor =
-            Math.sin(time / 5000 + (x + y) / 100) * 0.5 + 0.5; // Esto controla el parpadeo de las luces
-          const opacity = Math.random() < 0.5 ? 0.5 : brightnessFactor; // Ajusta la opacidad dependiendo del parpadeo
-
           if (isBright) {
-            context.arc(x, y, 4, 0, Math.PI * 2);
-            context.fillStyle = `rgba(7, 34, 237, ${opacity})`; // Aquí se usa la opacidad para el parpadeo
-            context.shadowColor = `rgba(87, 102, 213, ${opacity})`;
-            context.shadowBlur = 15;
+            context.arc(x, y, 3, 0, Math.PI * 2);
+            context.fillStyle = "rgba(7, 34, 237, 0.9)";
+            context.shadowColor = "rgba(87, 102, 213, 0.9)";
+            context.shadowBlur = 10;
           } else {
-            context.arc(x, y, 1, 0, Math.PI * 2);
-            context.fillStyle = `rgba(200, 200, 200, ${
-              0.3 + brightnessFactor * 0.7
-            })`; // Efecto más sutil para las luces apagadas
+            context.arc(x, y, 1.5, 0, Math.PI * 2);
+            context.fillStyle = "rgba(200, 200, 200, 0.5)";
             context.shadowColor = "transparent";
             context.shadowBlur = 0;
           }
@@ -157,10 +148,6 @@ const GameCanvas = () => {
           context.shadowColor = "transparent";
         }
       }
-
-      // Restablecer los valores globales para no afectar otras partes del canvas
-      context.shadowBlur = 0;
-      context.globalAlpha = 1;
     };
 
     const drawPaddle = (x, y, color) => {
@@ -293,13 +280,9 @@ const GameCanvas = () => {
       });
     };
 
+    // Actualización de la pelota
     const updateBall = () => {
-      if (countdown !== null) return;
-
-      if (showGoalAnimation) {
-        ball.current.dx = 0;
-        ball.current.dy = 0;
-      }
+      if (countdown !== null || showGoalAnimation) return;
 
       let { x, y, dx, dy } = ball.current;
 
@@ -396,15 +379,12 @@ const GameCanvas = () => {
         setBallInMiddle(true);
         setTimeout(() => {
           setBallInMiddle(false);
-          const direction = x - 8 <= 0 ? 1 : -1; // Direccion del gol
           ball.current = {
-            x: canvasWidth / 2,
-            y: canvasHeight / 2,
-            dx: direction * 2, // Ajusta la velocidad horizontal
-            dy: 1.5, // Asegúrate de que la pelota tenga velocidad vertical
-            trail: [],
+            ...ball.current,
+            dx: x - 8 <= 0 ? -2 : 2,
+            dy: 1.3,
           };
-        }, 4000); // Tiempo de espera después del gol
+        }, 3000);
 
         setTimeout(() => {
           setShowGoalAnimation(false);
@@ -418,24 +398,18 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
-      if (showGoalAnimation || ballInMiddle) {
-        drawGame();
-        updateParticles(context);
-        aiMovement();
-        return;
-      }
+      if (showGoalAnimation) return;
 
       updateBall();
+      aiMovement();
       drawGame();
       updateParticles(context);
-      aiMovement();
     };
+    //Movimiento de la IA
 
     let lastMoveTime = 0;
 
     let smoothedTargetY = 0;
-
-    //Movimiento de la IA
 
     const aiMovement = () => {
       if (ballInMiddle || ball.current.dy === 0 || player2.name !== "AI") {
