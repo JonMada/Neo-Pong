@@ -8,18 +8,25 @@
 }
 
 /* Texto animado */
-.goal-animation-text {
+.goal-animation {
   position: absolute;
-  top: 40%;
+  top: 45%;
   left: 42.4%;
   transform: translate(-50%, -50%);
   color: #ff007f;
-  font-size: 6.5em;
+  font-size: 1.23em;
   font-weight: bold;
   text-shadow: 0 0 20px #00d4ff, 0 0 30px #00d4ff, 0 0 40px #00d4ff,
     0 0 50px #ff007f, 0 0 50px #ff007f;
-  animation: fadeBlink 3s ease-in-out infinite;
   z-index: 9999;
+}
+
+.goal-animation.start {
+  animation: fadeBlink 3s ease-in-out infinite;
+}
+
+.goal-animation.end {
+  opacity: 0;
 }
 
 /* Animación del texto */

@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ScoreBoard from "./scoreBoard";
 import Instrucciones from "./instrucciones";
+import GoalAnimation from "./GoalAnimation";
 
 const GameCanvas = () => {
   const canvasRef = useRef(null);
@@ -53,6 +54,13 @@ const GameCanvas = () => {
         player2Y.current + step
       );
     }
+  };
+
+  //Animación de gol
+
+  const handleGoalAnimationEnd = () => {
+    setShowGoalAnimation(false);
+    setGoalLock(false);
   };
 
   // useEffect para agregar y remover los listeners de las teclas
@@ -417,6 +425,7 @@ const GameCanvas = () => {
       updateParticles(context); // Las partículas deben actualizarse siempre
       aiMovement(); // Movimiento de la IA, incluso si hay animación de gol
     };
+
     let lastMoveTime = 0;
 
     let smoothedTargetY = 0;
@@ -454,7 +463,8 @@ const GameCanvas = () => {
       lastMoveTime = Date.now();
 
       const predictionFactor =
-        difficulty === "hard" ? 1 : difficulty === "normal" ? 0.85 : 0.7;
+        difficulty === "hard" ? 1.2 : difficulty === "normal" ? 0.9 : 0.75;
+
       const predictedBallY =
         ball.current.y +
         (ball.current.dy / Math.abs(ball.current.dy)) *
@@ -480,16 +490,16 @@ const GameCanvas = () => {
       //Desviaciones según niveles de dificultad
       const deviation =
         difficulty === "hard"
-          ? Math.random() < 0.2
-            ? 5
-            : -5
+          ? Math.random() < 0.3
+            ? Math.random() * 5 - 2.5
+            : Math.random() * 3 - 1.5
           : difficulty === "normal"
           ? Math.random() < 0.5
-            ? 15
-            : -15
-          : Math.random() < 0.5
-          ? 30
-          : -30;
+            ? Math.random() * 10 - 5
+            : Math.random() * 8 - 4
+          : Math.random() < 0.7
+          ? Math.random() * 15 - 7.5
+          : Math.random() * 12 - 6;
 
       const targetYUnsmoothed =
         predictedBallY -
@@ -500,7 +510,7 @@ const GameCanvas = () => {
         deviation; // Aplicar desviación adicional
 
       // Suavizar el objetivo
-      smoothedTargetY = smoothedTargetY * 0.6 + targetYUnsmoothed * 0.4;
+      smoothedTargetY = smoothedTargetY * 0.8 + targetYUnsmoothed * 0.2;
 
       // Movimiento suave hacia el objetivo suavizado
       player2Y.current += (smoothedTargetY - player2Y.current) * 0.05;
@@ -522,10 +532,7 @@ const GameCanvas = () => {
 
       {/* Goal Animation */}
       {showGoalAnimation && (
-        <div className="goal-animation-container">
-          {/* Texto animado */}
-          <h1 className="goal-animation-text">GOAL!</h1>
-        </div>
+        <GoalAnimation onAnimationEnd={handleGoalAnimationEnd} />
       )}
 
       <ScoreBoard
