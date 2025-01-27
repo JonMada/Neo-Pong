@@ -417,6 +417,7 @@ const GameCanvas = () => {
     const gameLoop = () => {
       // Si estamos en animación de gol o la pelota está en el medio, no actualizamos el juego.
       if (showGoalAnimation || ballInMiddle) {
+        drawGame();
         return;
       }
 
@@ -526,7 +527,7 @@ const GameCanvas = () => {
   }, [score, showGoalAnimation, ballInMiddle]);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div>
       {/* CountDown Animation*/}
       {countdown !== null && <div className="countdown">{countdown}</div>}
 
@@ -541,20 +542,15 @@ const GameCanvas = () => {
         player1Score={score.player1}
         player2Score={score.player2}
       />
-
-      {/* Contenedor del canvas */}
-      <div style={{ position: "relative", zIndex: 20 }}>
-        <canvas
-          ref={canvasRef}
-          className="canvas-container"
-          style={{
-            margin: "20px auto",
-            display: "block",
-            backgroundColor: "#000",
-            zIndex: 5,
-          }}
-        />
-      </div>
+      <canvas
+        ref={canvasRef}
+        className="canvas-container"
+        style={{
+          margin: "20px auto",
+          display: "block",
+          backgroundColor: "#000",
+        }}
+      />
       <Instrucciones player1Name={player1.name} player2Name={player2.name} />
     </div>
   );
