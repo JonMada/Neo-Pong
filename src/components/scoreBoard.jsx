@@ -8,7 +8,7 @@ const ScoreBoard = ({
 }) => {
   const navigate = useNavigate();
 
-  if (player1Score === 9 || player2Score === 9) {
+  if (player1Score === 7 || player2Score === 7) {
     setTimeout(() => {
       navigate("/game-over", {
         state: { winner: player1Score === 7 ? player1Name : player2Name },
