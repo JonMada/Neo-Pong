@@ -402,7 +402,6 @@ const GameCanvas = () => {
       }
 
       ball.current = { x, y, dx, dy, trail: ball.current.trail };
-      requestAnimationFrame(gameLoop);
     };
 
     const gameLoop = () => {
@@ -420,6 +419,8 @@ const GameCanvas = () => {
       drawPaddle(canvasWidth - 20, player2Y.current, player2.color); // Pala del jugador 2
 
       updateParticles(context); // Actualiza las partículas (luces)
+
+      requestAnimationFrame(gameLoop); // Mantén la animación en ciclo
     };
 
     let lastMoveTime = 0;
