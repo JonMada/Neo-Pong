@@ -30,11 +30,11 @@
   border-radius: 20px;
   box-shadow: 0 0 25px 8px rgba(255, 0, 255, 1),
     0 0 50px 10px rgba(0, 255, 255, 1); /* Efecto neón intensificado */
-  animation: pulse 1.5s infinite alternate; /* Animación de pulsación */
+  animation: pulse2 1.5s infinite alternate; /* Animación de pulsación */
   transition: width 0.2s ease-in-out; /* Transición suave del ancho */
 }
 
-@keyframes pulse {
+@keyframes pulse2 {
   0% {
     box-shadow: 0 0 25px 8px rgba(255, 0, 255, 1),
       0 0 50px 10px rgba(0, 255, 255, 1);
