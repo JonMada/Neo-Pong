@@ -478,9 +478,8 @@ const GameCanvas = () => {
     };
 
     const gameLoop = () => {
-      // Siempre redibuja el fondo
-
       drawGame();
+      updateParticles(context);
 
       // Si estamos en animación de gol o la pelota está en el medio, no actualizamos el movimiento de la pelota.
       if (showGoalAnimation || ballInMiddle) {

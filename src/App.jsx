@@ -12,12 +12,15 @@ import CursorEffect from "./components/cursor";
 import GameOver from "./components/gameOver";
 import HomeButton from "./components/homeButton";
 
+import LoadingScreen from "./components/loadingScreen";
+
 import "./styles/main.scss";
 
 const App = () => {
   return (
     <Router>
       <div className="app">
+        <LoadingScreen />
         <CursorEffect />
         <HomeButton />
         <AudioPlayer />

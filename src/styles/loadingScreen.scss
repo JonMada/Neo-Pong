@@ -1,0 +1,50 @@
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black; /* Fondo más oscuro para que resalten los neones */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-bar-container {
+  width: 30%; /* Aumento del ancho para que sea más prominente */
+  height: 25px; /* Barra un poco más alta */
+  background-color: #222; /* Fondo de la barra más oscuro */
+  border-radius: 25px;
+  overflow: hidden; /* Esconde cualquier desbordamiento de la barra */
+}
+
+.loading-bar {
+  height: 100%;
+  width: 0%; /* El ancho inicial es 0 */
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 255, 0.9),
+    rgba(0, 255, 255, 0.9)
+  ); /* Gradiente de colores neón */
+  border-radius: 20px;
+  box-shadow: 0 0 25px 8px rgba(255, 0, 255, 1),
+    0 0 50px 10px rgba(0, 255, 255, 1); /* Efecto neón intensificado */
+  animation: pulse 1.5s infinite alternate; /* Animación de pulsación */
+  transition: width 0.2s ease-in-out; /* Transición suave del ancho */
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 25px 8px rgba(255, 0, 255, 1),
+      0 0 50px 10px rgba(0, 255, 255, 1);
+  }
+  50% {
+    box-shadow: 0 0 40px 15px rgba(255, 0, 255, 1),
+      0 0 80px 15px rgba(0, 255, 255, 1);
+  }
+  100% {
+    box-shadow: 0 0 25px 8px rgba(255, 0, 255, 1),
+      0 0 50px 10px rgba(0, 255, 255, 1);
+  }
+}
