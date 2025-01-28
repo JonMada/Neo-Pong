@@ -109,8 +109,8 @@ const GameCanvas = () => {
       };
       setTimeout(() => {
         const direction = Math.random() < 0.5 ? -1 : 1;
-        ball.current.dx = direction * 0.5;
-        ball.current.dy = 0.5; // Mantén la velocidad en Y constante
+        ball.current.dx = direction * 1.5;
+        ball.current.dy = 1.5; // Mantén la velocidad en Y constante
       }, 50);
     }, 4000);
 
@@ -333,7 +333,7 @@ const GameCanvas = () => {
         const bounceAngle = relativeImpact * maxBounceAngle; // Ángulo del rebote
 
         // Mantener la velocidad constante tras el rebote
-        const speed = Math.sqrt(dx * dx + dy * dy) * 1.05; // Incremento ligero en la velocidad
+        const speed = Math.sqrt(dx * dx + dy * dy) * 1.02; // Incremento ligero en la velocidad
 
         // Nuevas componentes de la velocidad
         dx = Math.abs(speed * Math.cos(bounceAngle)); // Siempre positivo hacia la derecha
@@ -342,7 +342,7 @@ const GameCanvas = () => {
         createParticles(x, y); // Animación en la colisión
       }
 
-      // Colisión con la pala del jugador 2 (IA)
+      // Colisión con la pala del jugador 2 _ (IA)
       if (
         x + 8 >= canvasWidth - 20 && // Golpea el lado derecho
         y >= player2Y.current &&
@@ -357,7 +357,7 @@ const GameCanvas = () => {
         const bounceAngle = relativeImpact * maxBounceAngle; // Ángulo del rebote
 
         // Mantener la velocidad constante tras el rebote
-        const speed = Math.sqrt(dx * dx + dy * dy) * 1.05; // Incremento ligero en la velocidad
+        const speed = Math.sqrt(dx * dx + dy * dy) * 1.02; // Incremento ligero en la velocidad
 
         // Nuevas componentes de la velocidad
         dx = -Math.abs(speed * Math.cos(bounceAngle)); // Siempre negativo hacia la izquierda
@@ -400,14 +400,22 @@ const GameCanvas = () => {
         setTimeout(() => {
           setBallInMiddle(false);
           const direction = x - 8 <= 0 ? -1 : 1; // Direccion del gol
+          const initialSpeed = 1.5; // Velocidad inicial para la pelota
+          const maxSpeed = 1.5; // Máxima velocidad permitida
+
           ball.current = {
             x: canvasWidth / 2,
             y: canvasHeight / 2,
-            dx: direction * 0.5, // Ajusta la velocidad horizontal
-            dy: 0.5, // Asegúrate de que la pelota tenga velocidad vertical
+            dx: direction * initialSpeed,
+            dy: 1.5,
             trail: [],
           };
-        }, 3500); // Tiempo de espera después del gol
+
+          ball.current.dx =
+            Math.min(Math.abs(ball.current.dx), maxSpeed) *
+            Math.sign(ball.current.dx);
+          ball.current.dy = Math.min(Math.abs(ball.current.dy), maxSpeed);
+        }, 3500);
 
         return;
       }
