@@ -127,33 +127,65 @@ const GameCanvas = () => {
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
+    let lastTime = 0; // Tiempo del último frame
+    let timeDelta = 0; // Diferencia de tiempo entre frames
+
     const drawPattern = () => {
       const spacing = 30;
       const brightProbability = 0.1;
 
-      // Limpiar el canvas antes de dibujar el patrón
-      context.clearRect(0, 0, canvas.width, canvas.height);
+      // Variación dinámica en la probabilidad de brillo y en el tamaño de las partículas
+      const scoreFactor = (score.player1 + score.player2) / 10; // Factor de cambio basado en el puntaje
+      const dynamicBrightProbability = Math.min(
+        brightProbability + scoreFactor * 0.05,
+        0.4
+      ); // Probabilidad máxima de brillo
+
+      // Desvanecer el fondo con un color oscuro translúcido para permitir el patrón anterior
+      context.fillStyle = "rgba(0, 0, 0, 0.1)"; // Fondo oscuro con poca transparencia
+      context.fillRect(0, 0, canvas.width, canvas.height); // Fondo que se desvanece con el tiempo
+
+      // Obtener el tiempo actual
+      const time = performance.now(); // Usar performance.now() para mayor precisión en el tiempo
+
+      // Calcular el tiempo transcurrido
+      timeDelta = (time - lastTime) / 1000; // Convertir de milisegundos a segundos
+      lastTime = time;
 
       for (let y = 0; y < canvas.height; y += spacing) {
         for (let x = 0; x < canvas.width; x += spacing) {
           context.beginPath();
-          const isBright = Math.random() < brightProbability;
 
+          // Usamos el tiempo transcurrido para variar si la partícula se ilumina o no
+          const timeOffset = (x + y) * 0.1; // Esto varía dependiendo de la posición de la partícula
+          const cycleFactor = Math.sin(time / 1000 + timeOffset); // Oscilación más controlada
+
+          // Introducimos una probabilidad aleatoria para que no todas las partículas se iluminen
+          const isBright =
+            Math.random() < dynamicBrightProbability && cycleFactor > 0; // Aleatorio + tiempo
+
+          // Cambiar el color de las partículas dependiendo del puntaje y del tiempo
+          let particleColor;
           if (isBright) {
-            context.arc(x, y, 3, 0, Math.PI * 2);
-            context.fillStyle = "rgba(7, 34, 237, 0.9)";
+            particleColor = `rgba(7, 34, 237, 0.9)`; // Azul brillante
             context.shadowColor = "rgba(87, 102, 213, 0.9)";
-            context.shadowBlur = 10;
           } else {
-            context.arc(x, y, 1.5, 0, Math.PI * 2);
-            context.fillStyle = "rgba(200, 200, 200, 0.5)";
+            const hue = (score.player1 + score.player2) * 10; // Cambio de color con el puntaje
+            particleColor = `hsl(${hue % 360}, 100%, 50%)`; // Colores cambiantes
             context.shadowColor = "transparent";
-            context.shadowBlur = 0;
           }
 
+          // Tamaño constante para las partículas
+          const particleSize = isBright ? 2 : 0.6; // Tamaño fijo para las partículas brillantes
+
+          // Dibujar la partícula
+          context.arc(x, y, particleSize, 0, Math.PI * 2);
+          context.fillStyle = particleColor;
+          context.shadowBlur = isBright ? 10 : 0; // Sombra solo para partículas brillantes
+
           context.fill();
-          context.shadowBlur = 0;
-          context.shadowColor = "transparent";
+          context.shadowBlur = 0; // Resetear sombra
+          context.shadowColor = "transparent"; // Resetear sombra
         }
       }
     };
