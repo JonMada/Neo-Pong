@@ -506,21 +506,21 @@ const GameCanvas = () => {
 
       const difficultySettings = {
         hard: {
-          speedMultiplier: 20,
+          speedMultiplier: 35,
           errorMargin: 1,
-          reactionDelay: 1,
-          precision: 0.05, // Alta precisión en hard
+          reactionDelay: 0.5,
+          precision: 0.001, // Alta precisión en hard
         },
         normal: {
-          speedMultiplier: 15,
-          errorMargin: 4,
-          reactionDelay: 4,
-          precision: 0.1, // Precisión moderada en normal
+          speedMultiplier: 25,
+          errorMargin: 1,
+          reactionDelay: 1,
+          precision: 0.05, // Precisión moderada en normal
         },
         easy: {
-          speedMultiplier: 10,
-          errorMargin: 15,
-          reactionDelay: 15,
+          speedMultiplier: 25,
+          errorMargin: 5,
+          reactionDelay: 5,
           precision: 0.2, // Menos precisión en easy
         },
       };
