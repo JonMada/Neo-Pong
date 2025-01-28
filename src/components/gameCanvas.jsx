@@ -199,15 +199,27 @@ const GameCanvas = () => {
     };
 
     const drawPaddle = (x, y, color) => {
-      const gradient = context.createLinearGradient(0, y, 0, y + paddleHeight);
-      gradient.addColorStop(0, `${color}80`);
-      gradient.addColorStop(1, `${color}40`);
+      // Crear un gradiente radial para el relleno con el efecto de luz de neón cyberpunk
+      const radialGradient = context.createRadialGradient(
+        x + paddleWidth / 2,
+        y + paddleHeight / 2,
+        0,
+        x + paddleWidth / 2,
+        y + paddleHeight / 2,
+        paddleHeight / 2
+      );
 
-      context.fillStyle = gradient;
+      // Usar colores típicos del estilo cyberpunk (cian, magenta, verde)
+      radialGradient.addColorStop(0, `${color}FF`); // Centro brillante
+      radialGradient.addColorStop(1, `${color}60`); // Bordes más oscuros y metálicos
+
+      // Establecer el gradiente para el relleno de la pala
+      context.fillStyle = radialGradient;
       context.lineWidth = 5;
-      context.strokeStyle = `${color}FF`;
+      context.strokeStyle = `${color}FF`; // Borde neón brillante
       context.lineJoin = "round";
 
+      // Dibujar la pala con el gradiente
       context.beginPath();
       context.moveTo(x, y + 10);
       context.lineTo(x + paddleWidth, y + 10);
@@ -216,15 +228,6 @@ const GameCanvas = () => {
       context.closePath();
       context.fill();
       context.stroke();
-
-      context.shadowColor = `${color}FF`;
-      context.shadowBlur = 15;
-      context.shadowOffsetX = 0;
-      context.shadowOffsetY = 0;
-      context.fill();
-
-      context.shadowBlur = 0;
-      context.shadowColor = "transparent";
     };
 
     const drawGame = () => {
@@ -304,7 +307,7 @@ const GameCanvas = () => {
           color: `hsl(${Math.random() * 180 + 180}, 100%, ${
             Math.random() * 40 + 30
           }%)`,
-          life: Math.random() * 30 + 30, // Vida partículas
+          life: Math.random() * 30 + 30,
         });
       }
     };

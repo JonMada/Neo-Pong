@@ -19,7 +19,7 @@ body {
 
 .audio-player {
   position: absolute;
-  right: 40px; /* Distancia desde el margen derecho */
+  right: 50px; /* Distancia desde el margen derecho */
   top: 20px; /* Distancia desde el margen inferior */
   z-index: 10; /* Asegúrate de que esté sobre otros elementos */
   display: flex;
@@ -31,7 +31,7 @@ body {
     background: transparent;
     border: none;
     cursor: none;
-    font-size: 30px;
+    font-size: 25px;
     color: white;
     height: 60px;
 
@@ -82,7 +82,7 @@ body {
 
 .home-player {
   position: absolute;
-  left: 40px; /* Distancia desde el margen derecho */
+  left: 50px; /* Distancia desde el margen derecho */
   top: 20px; /* Distancia desde el margen inferior */
   z-index: 10; /* Asegúrate de que esté sobre otros elementos */
   display: flex;
