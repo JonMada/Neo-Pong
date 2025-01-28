@@ -7,6 +7,7 @@ import GoalAnimation from "./goalAnimation";
 const GameCanvas = () => {
   const canvasRef = useRef(null);
   const location = useLocation();
+
   const { player1, player2, difficulty } = location.state;
 
   const player1Y = useRef(150);
