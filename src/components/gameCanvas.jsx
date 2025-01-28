@@ -423,8 +423,31 @@ const GameCanvas = () => {
       ball.current = { x, y, dx, dy, trail: ball.current.trail };
     };
 
+    //Debugging
+     //Debugging
+
+     let lastFrameTime = performance.now();
+     let frameCount = 0;
+     let fps = 0;
+ 
+     const calculateFPS = () => {
+       const now = performance.now();
+       const deltaTime = now - lastFrameTime; // Tiempo transcurrido desde el último frame
+       lastFrameTime = now;
+ 
+       frameCount++;
+       if (frameCount >= 10) {
+         // Actualiza el FPS cada 10 frames para evitar ruido
+         fps = Math.round(1000 / deltaTime);
+         console.log(FPS: ${fps});
+         frameCount = 0;
+       }
+     };
+
     const gameLoop = () => {
       // Siempre redibuja el fondo y las partículas
+
+      calculateFPS()
       drawGame();
       updateParticles(context);
 
