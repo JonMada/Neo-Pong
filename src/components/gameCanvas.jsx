@@ -506,37 +506,44 @@ const GameCanvas = () => {
 
       const difficultySettings = {
         hard: {
-          speedMultiplier: 15,
-          errorMargin: 5,
-          reactionDelay: 5,
+          speedMultiplier: 20,
+          errorMargin: 1,
+          reactionDelay: 1,
+          precision: 0.05, // Alta precisión en hard
         },
         normal: {
-          speedMultiplier: 10,
-          errorMargin: 8,
-          reactionDelay: 8,
+          speedMultiplier: 15,
+          errorMargin: 4,
+          reactionDelay: 4,
+          precision: 0.1, // Precisión moderada en normal
         },
         easy: {
           speedMultiplier: 10,
           errorMargin: 15,
           reactionDelay: 15,
+          precision: 0.2, // Menos precisión en easy
         },
       };
 
-      const { errorMargin, reactionDelay } = difficultySettings[difficulty];
+      const { errorMargin, reactionDelay, precision } =
+        difficultySettings[difficulty];
 
       if (Date.now() - lastMoveTime < reactionDelay) {
         return;
       }
       lastMoveTime = Date.now();
 
+      // Factor de predicción ajustado para los diferentes niveles de dificultad
       const predictionFactor =
-        difficulty === "hard" ? 1.2 : difficulty === "normal" ? 0.9 : 0.75;
+        difficulty === "hard" ? 1.5 : difficulty === "normal" ? 1.2 : 1;
 
+      // Predicción de la posición futura de la pelota
       const predictedBallY =
         ball.current.y +
         (ball.current.dy / Math.abs(ball.current.dy)) *
           Math.min(Math.abs(ball.current.dy) * predictionFactor, canvasHeight);
 
+      // Ajustar las zonas de la paleta (top, center, bottom) para hacer el movimiento menos predecible
       const paddleZones = {
         top: -paddleHeight * 0.35,
         bottom: paddleHeight * 0.35,
@@ -547,17 +554,10 @@ const GameCanvas = () => {
 
       const zoneOffset = paddleZones[zonePreference] || 0;
 
-      const borderBias =
-        difficulty === "hard"
-          ? Math.random() * 5 - 2.5
-          : difficulty === "normal"
-          ? Math.random() * 10 - 5
-          : Math.random() * 15 - 7.5;
-
-      //Desviaciones según niveles de dificultad
+      // Desviación para hacer el movimiento más humano
       const deviation =
         difficulty === "hard"
-          ? Math.random() < 0.3
+          ? Math.random() < 0.2
             ? Math.random() * 5 - 2.5
             : Math.random() * 3 - 1.5
           : difficulty === "normal"
@@ -569,20 +569,15 @@ const GameCanvas = () => {
           : Math.random() * 12 - 6;
 
       const targetYUnsmoothed =
-        predictedBallY -
-        paddleHeight / 2 +
-        zoneOffset +
-        borderBias +
-        (Math.random() * errorMargin - errorMargin / 2) +
-        deviation; // Aplicar desviación adicional
+        predictedBallY - paddleHeight / 2 + zoneOffset + deviation; // Aplicar desviación
 
-      // Suavizar el objetivo
+      // Suavizado del objetivo
       smoothedTargetY = smoothedTargetY * 0.8 + targetYUnsmoothed * 0.2;
 
-      // Movimiento suave hacia el objetivo suavizado
-      player2Y.current += (smoothedTargetY - player2Y.current) * 0.05;
+      // Movimiento hacia el objetivo suavizado
+      player2Y.current += (smoothedTargetY - player2Y.current) * precision;
 
-      // Limitar movimiento dentro de los límites
+      // Limitar el movimiento dentro de los límites de la pantalla
       player2Y.current = Math.max(
         0,
         Math.min(canvasHeight - paddleHeight, player2Y.current)
