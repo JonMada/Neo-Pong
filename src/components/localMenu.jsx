@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import ColorSlider from "./colorSlider";
+
 const LocalMenu = () => {
   const [player1, setPlayer1] = useState("");
   const [player1Color, setPlayer1Color] = useState("#ff0000");
@@ -52,12 +54,10 @@ const LocalMenu = () => {
             className="local-menu-input"
             required
           />
-          <input
-            type="color"
-            id="player1Color"
-            value={player1Color}
-            onChange={(e) => setPlayer1Color(e.target.value)}
-            className="local-menu-color"
+          <ColorSlider
+            color={player1Color}
+            setColor={setPlayer1Color}
+            playerName="Player 1"
           />
         </div>
         <div className="local-menu-player">
@@ -72,12 +72,10 @@ const LocalMenu = () => {
             className="local-menu-input"
             required
           />
-          <input
-            type="color"
-            id="player2Color"
-            value={player2Color}
-            onChange={(e) => setPlayer2Color(e.target.value)}
-            className="local-menu-color"
+          <ColorSlider
+            color={player2Color}
+            setColor={setPlayer2Color}
+            playerName="Player 2"
           />
         </div>
         <button type="submit" className="local-menu-button">

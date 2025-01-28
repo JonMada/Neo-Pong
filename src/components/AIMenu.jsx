@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import ColorSlider from "./colorSlider";
+
 const AIMenu = () => {
   const [player1, setPlayer1] = useState(""); // Estado para el jugador 1
   const [player1Color, setPlayer1Color] = useState("#ff0000"); // Color inicial para player 1
@@ -57,12 +59,10 @@ const AIMenu = () => {
             onChange={(e) => setPlayer1(e.target.value)}
             required
           />
-          <label htmlFor="player1Color">Select Color:</label>
-          <input
-            type="color"
-            id="player1Color"
-            value={player1Color}
-            onChange={(e) => setPlayer1Color(e.target.value)}
+          <ColorSlider
+            color={player1Color}
+            setColor={setPlayer1Color}
+            playerName="Player 1"
           />
         </div>
 
