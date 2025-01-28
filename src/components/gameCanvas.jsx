@@ -509,14 +509,14 @@ const GameCanvas = () => {
           reactionDelay: 1,
         },
         normal: {
-          speedMultiplier: 4,
+          speedMultiplier: 4.2,
           errorMargin: 4,
           reactionDelay: 4,
         },
         easy: {
-          speedMultiplier: 3,
-          errorMargin: 15,
-          reactionDelay: 15,
+          speedMultiplier: 3.2,
+          errorMargin: 10,
+          reactionDelay: 10,
         },
       };
 

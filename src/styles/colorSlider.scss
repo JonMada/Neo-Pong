@@ -40,9 +40,11 @@
   appearance: none;
   width: 20px; /* Tamaño del thumb */
   height: 20px; /* Tamaño del thumb */
+  background: linear-gradient(135deg, #00d2ff, #3a7bd5);
   border-radius: 50%;
-  background-color: #007bff;
-  cursor: pointer;
+  border: 2px solid #ffffff; /* Borde blanco */
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.6), 0 0 5px rgba(0, 123, 255, 0.9); /* Sombra de neón */
+  cursor: none;
   position: relative;
   top: -4px; /* Ajuste para centrar el thumb en el track */
 }
