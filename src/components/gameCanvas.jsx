@@ -424,11 +424,6 @@ const GameCanvas = () => {
     };
 
     //Debugging
-    //Debugging
-
-    let lastFrameTime = performance.now();
-    let frameCount = 0;
-    let fps = 0;
 
     let lastFrameTime = performance.now();
     let frameCount = 0;
