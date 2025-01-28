@@ -506,26 +506,26 @@ const GameCanvas = () => {
 
       const difficultySettings = {
         hard: {
-          speedMultiplier: 35,
+          speedMultiplier: 35, // Mayor velocidad en 'hard'
           errorMargin: 1,
           reactionDelay: 0.5,
           precision: 0.001, // Alta precisión en hard
         },
         normal: {
-          speedMultiplier: 25,
+          speedMultiplier: 25, // Velocidad moderada en 'normal'
           errorMargin: 1,
           reactionDelay: 1,
           precision: 0.05, // Precisión moderada en normal
         },
         easy: {
-          speedMultiplier: 25,
+          speedMultiplier: 25, // Velocidad moderada en 'easy'
           errorMargin: 5,
           reactionDelay: 5,
           precision: 0.2, // Menos precisión en easy
         },
       };
 
-      const { errorMargin, reactionDelay, precision } =
+      const { errorMargin, reactionDelay, precision, speedMultiplier } =
         difficultySettings[difficulty];
 
       if (Date.now() - lastMoveTime < reactionDelay) {
@@ -543,7 +543,7 @@ const GameCanvas = () => {
         (ball.current.dy / Math.abs(ball.current.dy)) *
           Math.min(Math.abs(ball.current.dy) * predictionFactor, canvasHeight);
 
-      // Ajustar las zonas de la paleta (top, center, bottom) para hacer el movimiento menos predecible
+      // Ajustar las zonas de la paleta (top, center, bottom)
       const paddleZones = {
         top: -paddleHeight * 0.35,
         bottom: paddleHeight * 0.35,
@@ -569,13 +569,18 @@ const GameCanvas = () => {
           : Math.random() * 12 - 6;
 
       const targetYUnsmoothed =
-        predictedBallY - paddleHeight / 2 + zoneOffset + deviation; // Aplicar desviación
+        predictedBallY -
+        paddleHeight / 2 +
+        zoneOffset +
+        deviation +
+        (Math.random() * errorMargin - errorMargin / 2);
 
       // Suavizado del objetivo
       smoothedTargetY = smoothedTargetY * 0.8 + targetYUnsmoothed * 0.2;
 
-      // Movimiento hacia el objetivo suavizado
-      player2Y.current += (smoothedTargetY - player2Y.current) * precision;
+      // Aplicar el speedMultiplier para ajustar la velocidad de la IA
+      player2Y.current +=
+        (smoothedTargetY - player2Y.current) * precision * speedMultiplier;
 
       // Limitar el movimiento dentro de los límites de la pantalla
       player2Y.current = Math.max(

@@ -1,5 +1,9 @@
 const OnlineMenu = () => {
-  return <div>Available Soon!</div>;
+  return (
+    <div>
+      <h1>Available Soon!</h1>
+    </div>
+  );
 };
 
 export default OnlineMenu;
