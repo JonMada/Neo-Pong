@@ -495,8 +495,6 @@ const GameCanvas = () => {
 
     let lastMoveTime = 0;
 
-    let smoothedTargetY = 0;
-
     //Movimiento de la IA
 
     const aiMovement = () => {
@@ -506,44 +504,41 @@ const GameCanvas = () => {
 
       const difficultySettings = {
         hard: {
-          speedMultiplier: 25, // Mayor velocidad en 'hard'
-          errorMargin: 1,
-          reactionDelay: 0.5,
-          precision: 0.01, // Alta precisión en hard
+          speedMultiplier: 4.5,
+          errorMargin: 3.5,
+          reactionDelay: 1,
         },
         normal: {
-          speedMultiplier: 15, // Velocidad moderada en 'normal'
-          errorMargin: 1,
-          reactionDelay: 1,
-          precision: 0.1, // Precisión moderada en normal
+          speedMultiplier: 4,
+          errorMargin: 4,
+          reactionDelay: 4,
         },
         easy: {
-          speedMultiplier: 25, // Velocidad moderada en 'easy'
-          errorMargin: 5,
-          reactionDelay: 5,
-          precision: 0.2, // Menos precisión en easy
+          speedMultiplier: 3,
+          errorMargin: 15,
+          reactionDelay: 15,
         },
       };
 
-      const { errorMargin, reactionDelay, precision, speedMultiplier } =
+      const { speedMultiplier, errorMargin, reactionDelay } =
         difficultySettings[difficulty];
 
+      // Controlar el tiempo de reacción de la IA
       if (Date.now() - lastMoveTime < reactionDelay) {
         return;
       }
       lastMoveTime = Date.now();
 
-      // Factor de predicción ajustado para los diferentes niveles de dificultad
-      const predictionFactor =
-        difficulty === "hard" ? 1.5 : difficulty === "normal" ? 1.2 : 1;
-
       // Predicción de la posición futura de la pelota
+      const predictionFactor =
+        difficulty === "hard" ? 1.2 : difficulty === "normal" ? 0.9 : 0.75;
+
       const predictedBallY =
         ball.current.y +
         (ball.current.dy / Math.abs(ball.current.dy)) *
           Math.min(Math.abs(ball.current.dy) * predictionFactor, canvasHeight);
 
-      // Ajustar las zonas de la paleta (top, center, bottom)
+      // Ajustes de las zonas de la pala
       const paddleZones = {
         top: -paddleHeight * 0.35,
         bottom: paddleHeight * 0.35,
@@ -554,14 +549,15 @@ const GameCanvas = () => {
 
       const zoneOffset = paddleZones[zonePreference] || 0;
 
-      // Desviación para hacer el movimiento más humano
+      // Desviación para hacer el movimiento más humano (menos predecible)
       const deviation =
         difficulty === "hard"
-          ? Math.random() * 2 - 1 // Menor variabilidad
+          ? Math.random() * 5 - 2.5
           : difficulty === "normal"
-          ? Math.random() * 4 - 2
-          : Math.random() * 6 - 3;
+          ? Math.random() * 10 - 5
+          : Math.random() * 15 - 7.5;
 
+      // Calcular la posición objetivo
       const targetYUnsmoothed =
         predictedBallY -
         paddleHeight / 2 +
@@ -569,14 +565,11 @@ const GameCanvas = () => {
         deviation +
         (Math.random() * errorMargin - errorMargin / 2);
 
-      // Suavizado del objetivo
-      smoothedTargetY = smoothedTargetY * 0.5 + targetYUnsmoothed * 0.5;
-
-      // Aplicar el speedMultiplier para ajustar la velocidad de la IA
+      // Movimiento de la IA: aplicar speedMultiplier y actualizar la posición de la pala
       player2Y.current +=
-        (smoothedTargetY - player2Y.current) * precision * speedMultiplier;
+        (targetYUnsmoothed - player2Y.current) * speedMultiplier * 0.01;
 
-      // Limitar el movimiento dentro de los límites de la pantalla
+      // Limitar el movimiento de la pala dentro de los límites del canvas
       player2Y.current = Math.max(
         0,
         Math.min(canvasHeight - paddleHeight, player2Y.current)
