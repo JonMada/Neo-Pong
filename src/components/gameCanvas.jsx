@@ -109,8 +109,8 @@ const GameCanvas = () => {
       };
       setTimeout(() => {
         const direction = Math.random() < 0.5 ? -1 : 1;
-        ball.current.dx = direction * 1.5;
-        ball.current.dy = 1.5; // Mantén la velocidad en Y constante
+        ball.current.dx = direction * 2.5;
+        ball.current.dy = 2; // Mantén la velocidad en Y constante
       }, 50);
     }, 4000);
 
@@ -126,6 +126,13 @@ const GameCanvas = () => {
 
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
+
+    // Lógica después de que se termine el gol y la animación
+    if (showGoalAnimation === false && goalLock === false) {
+      // Centrar las palas después del gol
+      player1Y.current = canvasHeight / 2 - paddleHeight / 2; // Centrar jugador 1
+      player2Y.current = canvasHeight / 2 - paddleHeight / 2; // Centrar jugador 2
+    }
 
     let lastTime = 0; // Tiempo del último frame
     let timeDelta = 0; // Diferencia de tiempo entre frames
@@ -170,13 +177,13 @@ const GameCanvas = () => {
             particleColor = `rgba(7, 34, 237, 0.9)`; // Azul brillante
             context.shadowColor = "rgba(87, 102, 213, 0.9)";
           } else {
-            const hue = (score.player1 + score.player2) * 10; // Cambio de color con el puntaje
-            particleColor = `hsl(${hue % 360}, 100%, 50%)`; // Colores cambiantes
+            const hue = (score.player1 + score.player2) * 10; // Cambio de color en cada gol
+            particleColor = `hsl(${hue % 360}, 100%, 60%)`; // Colores cambiantes
             context.shadowColor = "transparent";
           }
 
           // Tamaño constante para las partículas
-          const particleSize = isBright ? 2 : 0.6; // Tamaño fijo para las partículas brillantes
+          const particleSize = isBright ? 2.5 : 0.6; // Tamaño fijo para las partículas brillantes
 
           // Dibujar la partícula
           context.arc(x, y, particleSize, 0, Math.PI * 2);
@@ -374,7 +381,7 @@ const GameCanvas = () => {
         const bounceAngle = relativeImpact * maxBounceAngle; // Ángulo del rebote
 
         // Mantener la velocidad constante tras el rebote
-        const speed = Math.sqrt(dx * dx + dy * dy) * 1.02; // Incremento ligero en la velocidad
+        const speed = Math.sqrt(dx * dx + dy * dy) * 1.05; // Incremento ligero en la velocidad
 
         // Nuevas componentes de la velocidad
         dx = Math.abs(speed * Math.cos(bounceAngle)); // Siempre positivo hacia la derecha
@@ -398,7 +405,7 @@ const GameCanvas = () => {
         const bounceAngle = relativeImpact * maxBounceAngle; // Ángulo del rebote
 
         // Mantener la velocidad constante tras el rebote
-        const speed = Math.sqrt(dx * dx + dy * dy) * 1.02; // Incremento ligero en la velocidad
+        const speed = Math.sqrt(dx * dx + dy * dy) * 1.05; // Incremento ligero en la velocidad
 
         // Nuevas componentes de la velocidad
         dx = -Math.abs(speed * Math.cos(bounceAngle)); // Siempre negativo hacia la izquierda
@@ -441,14 +448,14 @@ const GameCanvas = () => {
         setTimeout(() => {
           setBallInMiddle(false);
           const direction = x - 8 <= 0 ? -1 : 1; // Direccion del gol
-          const initialSpeed = 1.5; // Velocidad inicial para la pelota
-          const maxSpeed = 1.5; // Máxima velocidad permitida
+          const initialSpeed = 2.5; // Velocidad inicial para la pelota
+          const maxSpeed = 10; // Máxima velocidad permitida
 
           ball.current = {
             x: canvasWidth / 2,
             y: canvasHeight / 2,
             dx: direction * initialSpeed,
-            dy: 1.5,
+            dy: 2,
             trail: [],
           };
 
