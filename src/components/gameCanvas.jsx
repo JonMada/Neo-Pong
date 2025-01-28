@@ -271,21 +271,30 @@ const GameCanvas = () => {
 
     // Actualización y dibujo de partículas
     const updateParticles = (context) => {
-      particles.current.forEach((particle, index) => {
-        if (particle.life <= 0) {
-          particles.current.splice(index, 1); // Eliminar partículas cuando se acabe su vida
-        } else {
-          particle.x += particle.dx;
-          particle.y += particle.dy;
-          particle.life -= 1;
+      const activeParticles = []; // Array para almacenar las partículas vivas
 
-          // Dibujar cada partícula
-          context.beginPath();
-          context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-          context.fillStyle = particle.color;
-          context.fill();
+      particles.current.forEach((particle) => {
+        if (particle.life <= 0) {
+          return; // Si la partícula está muerta, no la dibujamos
         }
+
+        // Movimiento de las partículas
+        particle.x += particle.dx;
+        particle.y += particle.dy;
+        particle.life -= 1;
+
+        // Dibujar la partícula
+        context.beginPath();
+        context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        context.fillStyle = particle.color;
+        context.fill();
+
+        // Solo agregamos partículas vivas al array
+        activeParticles.push(particle);
       });
+
+      // Actualizar las partículas activas
+      particles.current = activeParticles;
     };
 
     //Gestion de la pelota
@@ -420,36 +429,19 @@ const GameCanvas = () => {
         return;
       }
 
-      ball.current = { x, y, dx, dy, trail: ball.current.trail };
-    };
+      ball.current.x = x;
+      ball.current.y = y;
+      ball.current.dx = dx;
+      ball.current.dy = dy;
+      ball.current.trail = ball.current.trail;
 
-    //Debugging
-
-    let lastFrameTime = performance.now();
-    let frameCount = 0;
-    let fps = 0;
-
-    const calculateFPS = () => {
-      const now = performance.now();
-      const deltaTime = now - lastFrameTime; // Tiempo transcurrido desde el último frame
-      lastFrameTime = now;
-
-      frameCount++;
-      if (frameCount >= 10) {
-        // Actualiza el FPS cada 10 frames para evitar ruido
-        fps = Math.round(1000 / deltaTime);
-        console.log(`FPS: ${fps}`);
-        frameCount = 0;
-      }
+      requestAnimationFrame(gameLoop);
     };
 
     const gameLoop = () => {
-      // Siempre redibuja el fondo y las partículas
-
-      calculateFPS();
+      // Siempre redibuja el fondo
 
       drawGame();
-      updateParticles(context);
 
       // Si estamos en animación de gol o la pelota está en el medio, no actualizamos el movimiento de la pelota.
       if (showGoalAnimation || ballInMiddle) {
@@ -459,11 +451,8 @@ const GameCanvas = () => {
       updateBall(); // Solo actualiza la pelota si no hay animación de gol ni está en el medio
       aiMovement(); // Movimiento de la IA, incluso si hay animación de gol
 
-      requestAnimationFrame(gameLoop); // Llama al siguiente frame para continuar la animación
+      // Llama al siguiente frame para continuar la animación
     };
-
-    // Iniciar el bucle de juego
-    requestAnimationFrame(gameLoop);
 
     let lastMoveTime = 0;
 
