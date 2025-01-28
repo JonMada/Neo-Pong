@@ -506,16 +506,16 @@ const GameCanvas = () => {
 
       const difficultySettings = {
         hard: {
-          speedMultiplier: 35, // Mayor velocidad en 'hard'
+          speedMultiplier: 25, // Mayor velocidad en 'hard'
           errorMargin: 1,
           reactionDelay: 0.5,
-          precision: 0.001, // Alta precisión en hard
+          precision: 0.01, // Alta precisión en hard
         },
         normal: {
-          speedMultiplier: 25, // Velocidad moderada en 'normal'
+          speedMultiplier: 15, // Velocidad moderada en 'normal'
           errorMargin: 1,
           reactionDelay: 1,
-          precision: 0.05, // Precisión moderada en normal
+          precision: 0.1, // Precisión moderada en normal
         },
         easy: {
           speedMultiplier: 25, // Velocidad moderada en 'easy'
@@ -557,16 +557,10 @@ const GameCanvas = () => {
       // Desviación para hacer el movimiento más humano
       const deviation =
         difficulty === "hard"
-          ? Math.random() < 0.2
-            ? Math.random() * 5 - 2.5
-            : Math.random() * 3 - 1.5
+          ? Math.random() * 2 - 1 // Menor variabilidad
           : difficulty === "normal"
-          ? Math.random() < 0.5
-            ? Math.random() * 10 - 5
-            : Math.random() * 8 - 4
-          : Math.random() < 0.7
-          ? Math.random() * 15 - 7.5
-          : Math.random() * 12 - 6;
+          ? Math.random() * 4 - 2
+          : Math.random() * 6 - 3;
 
       const targetYUnsmoothed =
         predictedBallY -
@@ -576,7 +570,7 @@ const GameCanvas = () => {
         (Math.random() * errorMargin - errorMargin / 2);
 
       // Suavizado del objetivo
-      smoothedTargetY = smoothedTargetY * 0.8 + targetYUnsmoothed * 0.2;
+      smoothedTargetY = smoothedTargetY * 0.5 + targetYUnsmoothed * 0.5;
 
       // Aplicar el speedMultiplier para ajustar la velocidad de la IA
       player2Y.current +=
