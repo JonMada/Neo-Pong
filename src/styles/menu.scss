@@ -1,19 +1,32 @@
 .main-menu {
-  padding: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 100%;
+
   color: white;
   margin-top: -65px;
+  text-align: center;
 
   &__title {
     font-size: 6.4em;
-    text-align: center;
     margin: 20px;
     text-shadow: 0 0 15px rgba(255, 0, 255, 0.8),
       0 0 30px rgba(0, 255, 255, 0.8);
+
+    @media (max-width: 1024px) {
+      font-size: 3.5em;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 3.2em;
+      margin: 0px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 2.2em;
+      margin: 0px;
+    }
   }
 
   &__options {
@@ -21,6 +34,14 @@
     flex-direction: column;
     gap: 20px;
     align-items: center;
+
+    @media (max-width: 1024px) {
+      gap: 15px;
+    }
+
+    @media (max-width: 768px) {
+      gap: 0px;
+    }
   }
 
   &__button {
@@ -46,6 +67,17 @@
       transform: scale(1.05);
       background-color: rgba(255, 0, 255, 1);
       box-shadow: 0 0 15px rgba(255, 0, 255, 1);
+    }
+
+    @media (max-width: 1024px) {
+      width: 300px;
+      font-size: 2em;
+    }
+
+    @media (max-width: 480px) {
+      width: 200px;
+      font-size: 1.5em;
+      padding: 10px 30px;
     }
   }
 }

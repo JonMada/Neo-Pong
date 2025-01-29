@@ -48,7 +48,6 @@ const AIMenu = () => {
 
   return (
     <div className="homepage">
-      <h1>Neo-Pong</h1>
       <form onSubmit={handleSubmit}>
         <div className="input-player">
           <label htmlFor="player1">Your Name:</label>

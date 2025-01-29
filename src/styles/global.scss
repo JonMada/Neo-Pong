@@ -1,3 +1,9 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+}
+
 body {
   margin: 0;
   font-family: "Oxanium", serif;
@@ -6,8 +12,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
 }
 
@@ -15,13 +20,25 @@ body {
   text-align: center;
   width: 800px;
   background: transparent;
+
+  @media (max-width: 1024px) {
+    width: 700px;
+  }
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
+
+  @media (max-width: 480px) {
+    width: 95%;
+  }
 }
 
 .audio-player {
   position: absolute;
-  right: 50px; /* Distancia desde el margen derecho */
-  top: 20px; /* Distancia desde el margen inferior */
-  z-index: 10; /* Asegúrate de que esté sobre otros elementos */
+  right: 50px;
+  top: 20px;
+  z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,10 +51,43 @@ body {
     font-size: 25px;
     color: white;
     height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     svg {
       display: flex;
       align-items: center;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    right: 30px;
+    top: 15px;
+
+    button {
+      font-size: 22px;
+      height: 50px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    right: 20px;
+    top: 10px;
+
+    button {
+      font-size: 20px;
+      height: 45px;
+    }
+  }
+
+  @media (max-width: 450px) {
+    right: 20px;
+    top: -15px;
+
+    button {
+      font-size: 14px;
+      height: 30px;
     }
   }
 }
@@ -46,15 +96,15 @@ body {
 * {
   cursor: none; /* Elimina el cursor por defecto */
 }
+
 .cursor-container {
   position: fixed;
-  top: 0;
   left: 0;
-  width: 100vw; /* Asegura que el contenedor ocupe toda la pantalla */
-  height: 100vh; /* Asegura que el contenedor ocupe toda la pantalla */
-  pointer-events: none; /* No interfiere con otros elementos */
-  z-index: 9999; /* Asegura que el rastro esté por encima de otros elementos */
-  overflow: hidden; /* Asegura que los rastros no se salgan del área visible */
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
 }
 
 .cursor-neon {
@@ -62,11 +112,34 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: rgba(0, 255, 255, 0.7); /* Color del rastro */
+  background-color: rgba(0, 255, 255, 0.7);
   pointer-events: none;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 15px rgba(0, 255, 255, 1);
-  animation: fadeOut 0.3s ease-out forwards; /* Efecto de desvanecimiento */
+  animation: fadeOut 0.3s ease-out forwards;
+
+  @media (max-width: 1024px) {
+    width: 15px;
+    height: 15px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+  }
+
+  @media (max-width: 768px) {
+    width: 10px;
+    height: 10px;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+  }
+}
+
+// Desactiva el cursor personalizado en dispositivos táctiles
+@media (hover: none), (pointer: coarse) {
+  * {
+    cursor: default; /* Restaura el cursor en móviles y tablets */
+  }
+
+  .cursor-container {
+    display: none; /* Oculta el cursor personalizado en pantallas táctiles */
+  }
 }
 
 @keyframes fadeOut {
@@ -82,9 +155,9 @@ body {
 
 .home-player {
   position: absolute;
-  left: 50px; /* Distancia desde el margen derecho */
-  top: 20px; /* Distancia desde el margen inferior */
-  z-index: 10; /* Asegúrate de que esté sobre otros elementos */
+  left: 50px;
+  top: 20px;
+  z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,10 +170,43 @@ body {
     font-size: 30px;
     color: white;
     height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     svg {
       display: flex;
       align-items: center;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    left: 30px;
+    top: 15px;
+
+    button {
+      font-size: 25px;
+      height: 50px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    left: 20px;
+    top: 10px;
+
+    button {
+      font-size: 22px;
+      height: 45px;
+    }
+  }
+
+  @media (max-width: 450px) {
+    left: 20px;
+    top: -15px;
+
+    button {
+      font-size: 14px;
+      height: 30px;
     }
   }
 }

@@ -40,7 +40,6 @@ const LocalMenu = () => {
 
   return (
     <div className="local-menu">
-      <h1 className="local-menu-title">Neo-Pong</h1>
       <form className="local-menu-form" onSubmit={handleSubmit}>
         <div className="local-menu-player">
           <label htmlFor="player1" className="local-menu-label">

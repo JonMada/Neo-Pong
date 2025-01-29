@@ -4,31 +4,74 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 100%;
   color: white;
   margin-top: -65px;
-}
 
-h1 {
-  font-size: 6.4em;
-  text-align: center;
-  text-shadow: 0 0 15px rgba(255, 0, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.8);
-  margin: 0;
-  margin-top: 60px;
-  margin-bottom: 30px;
+  @media (max-width: 1024px) {
+    padding: 30px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 25px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 20px;
+  }
+
+  @media (max-width: 342px) {
+    padding: 15px;
+  }
 }
 
 form {
-  width: 500px;
+  width: 90%; /* Ajustado para que ocupe el 90% del ancho */
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   background-color: rgba(0, 0, 0, 0.6);
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(255, 0, 255, 0.7);
   backdrop-filter: blur(10px);
   font-size: 1.9em;
+  margin: 0 auto;
+
+  /* Centrado vertical */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  @media (max-width: 1024px) {
+    padding: 25px;
+    font-size: 1.7em;
+    width: 60%;
+    margin-top: 50px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px;
+    font-size: 1.5em;
+    width: 60%;
+    margin-top: 45px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 15px;
+    font-size: 1.3em;
+    width: 60%;
+    margin-top: 45px;
+  }
+
+  @media (max-width: 342px) {
+    padding: 12px;
+    font-size: 1.1em;
+    width: 60%;
+    margin-top: 45px;
+  }
 
   .ia-button {
     margin: 50px 10px 0 10px;
@@ -42,6 +85,24 @@ form {
     text-shadow: 0 0 10px rgba(255, 0, 255, 1);
     box-shadow: 0 0 15px rgba(0, 255, 255, 1);
     transition: 0.3s;
+
+    @media (max-width: 1024px) {
+      font-size: 1.2em;
+      padding: 8px 20px;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 1.1em;
+      padding: 8px 15px;
+      margin-top: 35px;
+    }
+
+    @media (max-width: 420px) {
+      font-size: 1em;
+      padding: 6px 12px;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
   }
 
   button:hover {
@@ -64,6 +125,22 @@ form {
   justify-content: center;
   padding: 10px;
   border-radius: 8px;
+
+  @media (max-width: 1024px) {
+    gap: 25px;
+  }
+
+  @media (max-width: 768px) {
+    gap: 20px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 15px;
+  }
+
+  @media (max-width: 342px) {
+    gap: 10px;
+  }
 }
 
 .label {
@@ -71,6 +148,18 @@ form {
   margin-left: 20px;
   color: #ffffff;
   font-weight: bold;
+
+  @media (max-width: 1024px) {
+    font-size: 0.95em;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.9em;
+  }
+
+  @media (max-width: 342px) {
+    font-size: 0.85em;
+  }
 }
 
 input {
@@ -83,14 +172,45 @@ input {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
   font-size: 1em;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    font-size: 0.95em;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.9em;
+  }
+
+  @media (max-width: 342px) {
+    font-size: 0.85em;
+    height: 40px;
+  }
 }
 
 #player1 {
-  width: 350px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    width: 80%;
+  }
+
+  @media (max-width: 342px) {
+    width: 80%;
+  }
 }
 
-input [type="text"] {
-  width: 700px;
+input[type="text"] {
+  width: 100%; /* Ajuste dinámico al 100% */
+  max-width: 700px;
+
+  @media (max-width: 1024px) {
+    width: 80%;
+  }
+
+  @media (max-width: 342px) {
+    width: 60%;
+  }
 }
 
 input:focus {
@@ -110,25 +230,39 @@ button {
   text-shadow: 0 0 10px rgba(255, 0, 255, 1);
   box-shadow: 0 0 15px rgba(0, 255, 255, 1);
   transition: 0.3s;
-}
 
-button:hover {
-  background-color: rgba(255, 0, 255, 1);
-  box-shadow: 0 0 25px rgba(255, 0, 255, 1);
-}
+  @media (max-width: 1024px) {
+    font-size: 1.2em;
+    padding: 8px 20px;
+  }
 
-button:active {
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+  @media (max-width: 768px) {
+    font-size: 1.1em;
+    padding: 8px 15px;
+  }
+
+  @media (max-width: 342px) {
+    font-size: 1em;
+    padding: 6px 12px;
+  }
 }
 
 .difficulty-select {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 20px;
+
+  @media (max-width: 768px) {
+    margin-top: 0px;
+  }
 
   label {
     font-size: 1em;
+
+    @media (max-width: 700px) {
+      margin-bottom: 35px;
+    }
   }
 
   .difficulty-buttons {
@@ -136,6 +270,13 @@ button:active {
     justify-content: space-around;
     gap: 25px;
     margin-top: -15px;
+
+    @media (max-width: 1024px) {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: -30px;
+    }
   }
 
   .difficulty-button {
@@ -149,6 +290,22 @@ button:active {
     text-shadow: 0 0 5px rgba(255, 0, 255, 1);
     box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
     transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+
+    @media (max-width: 1024px) {
+      font-size: 0.8em;
+    }
+
+    @media (max-width: 450px) {
+      font-size: 0.7em;
+      padding: 8px 16px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 380px) {
+      font-size: 0.7em;
+      padding: 8px 16px;
+      margin-top: 12px;
+    }
 
     &:hover {
       transform: scale(1.1);
