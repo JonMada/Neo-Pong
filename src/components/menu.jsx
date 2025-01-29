@@ -47,7 +47,7 @@ const Menu = () => {
         <div className="main-menu__warning">
           <p>
             This game is designed for PC. It may not provide the best experience
-            on mobile devices.
+            on mobile devices. It is best played on a full-screen monitor.
           </p>
         </div>
       )}
