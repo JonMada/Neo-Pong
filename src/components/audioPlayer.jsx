@@ -9,46 +9,69 @@ import Song4 from "../assets/audio/song4.mp3";
 import Song5 from "../assets/audio/song5.mp3";
 
 const AudioPlayer = () => {
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false); // Inicializamos con 'false' para dispositivos móviles
   const [volume, setVolume] = useState(0.5);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Lista de canciones
   const songs = [Song1, Song2, Song3, Song4, Song5];
 
+  // Función para mezclar las canciones aleatoriamente
   const shuffleSongs = (songList) => {
     return songList.sort(() => Math.random() - 0.5);
   };
 
-  // Lista de canciones aleatoria
+  // Lista de canciones aleatorias
   const shuffledSongs = shuffleSongs([...songs]);
 
+  // Detectar si el dispositivo es móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      if (window.innerWidth <= 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    // Ejecutar la función al cargar y cambiar el tamaño de la ventana
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+    };
+  }, []);
+
+  // Función para cambiar el estado de la reproducción
   const togglePlay = () => {
-    setPlaying(!playing);
+    if (isMobile) {
+      // En dispositivos móviles, solo cambiamos el estado si el usuario hace clic
+      setPlaying(!playing);
+    } else {
+      // En dispositivos de escritorio, podemos comenzar a reproducir directamente
+      setPlaying(!playing);
+    }
   };
 
   const handleEnd = () => {
     setCurrentSongIndex((prevIndex) => (prevIndex + 1) % shuffledSongs.length);
   };
 
-  useEffect(() => {
-    if (playing) {
-      console.log("Reproduciendo música...");
-    } else {
-      console.log("Pausado...");
-    }
-  }, [playing]);
-
   return (
     <div className="audio-player">
-      {/* Icono que alterna entre play/pause */}
-      <button onClick={togglePlay}>{playing ? <FaPause /> : <FaPlay />}</button>
+      {/* Botón que alterna entre play/pause */}
+      <button onClick={togglePlay} className="play-pause-btn">
+        {playing ? <FaPause /> : <FaPlay />}
+      </button>
 
+      {/* Reproductor de audio */}
       <ReactHowler
         src={shuffledSongs[currentSongIndex]}
-        playing={playing}
+        playing={playing} // Se reproduce cuando el estado 'playing' es true
         volume={volume}
-        loop={false} //
+        loop={false}
         onEnd={handleEnd}
       />
     </div>
