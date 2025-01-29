@@ -13,6 +13,7 @@ const AudioPlayer = () => {
   const [volume, setVolume] = useState(0.5);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
 
   // Lista de canciones
   const songs = [Song1, Song2, Song3, Song4, Song5];
@@ -44,13 +45,28 @@ const AudioPlayer = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isMobile) {
+      setPlaying(true);
+    }
+  }, [isMobile]);
+
+  const handleUserInteraction = () => {
+    if (!hasUserInteracted) {
+      setHasUserInteracted(true);
+      setPlaying(true); // Inicia la reproducción después de la interacción
+    }
+  };
+
   // Función para cambiar el estado de la reproducción
   const togglePlay = () => {
     if (isMobile) {
-      // En dispositivos móviles, solo cambiamos el estado si el usuario hace clic
-      setPlaying(!playing);
+      if (!hasUserInteracted) {
+        handleUserInteraction();
+      } else {
+        setPlaying(!playing);
+      }
     } else {
-      // En dispositivos de escritorio, podemos comenzar a reproducir directamente
       setPlaying(!playing);
     }
   };
