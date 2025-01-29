@@ -19,12 +19,6 @@ const Menu = () => {
         >
           Challenge the AI
         </button>
-        <button
-          className="main-menu__button"
-          onClick={() => navigate("/online-game")}
-        >
-          Play Online
-        </button>
       </div>
     </div>
   );

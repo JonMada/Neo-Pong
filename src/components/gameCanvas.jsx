@@ -43,9 +43,9 @@ const GameCanvas = () => {
     }
   };
 
-  // Control de las teclas de Player 1
+  // Control de las teclas de Player 2
   const handleKeyDownPlayer2 = (e) => {
-    const step = 45;
+    const step = 60;
     if (e.key === "ArrowUp" || e.key === "Up") {
       player2Y.current = Math.max(0, player2Y.current - step);
     }
@@ -55,13 +55,6 @@ const GameCanvas = () => {
         player2Y.current + step
       );
     }
-  };
-
-  //Animación de gol
-
-  const handleGoalAnimationEnd = () => {
-    setShowGoalAnimation(false);
-    setGoalLock(false);
   };
 
   // useEffect para agregar y remover los listeners de las teclas
@@ -83,6 +76,12 @@ const GameCanvas = () => {
     };
   }, [showGoalAnimation, ballInMiddle, player2.name]);
 
+  //Animación de gol
+
+  const handleGoalAnimationEnd = () => {
+    setShowGoalAnimation(false);
+    setGoalLock(false);
+  };
   //CountDown
 
   useEffect(() => {
