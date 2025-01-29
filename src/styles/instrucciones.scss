@@ -1,13 +1,15 @@
 .instructions-container {
+  width: 1800px;
+  height: 300px;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 20px;
   position: absolute;
   top: 62%;
-  transform: translateY(-50%);
-  width: 100%;
+  margin-left: -500px;
   z-index: 10;
   transition: opacity 1s ease-out;
 }
@@ -19,9 +21,9 @@
 .instruction {
   position: absolute;
   width: 300px;
-  top: 30%;
+  top: 5%;
   transform: translateY(
-    -60%
+    -50%
   ); /* Centramos verticalmente cada bloque de instrucciones */
   font-size: 1.4em;
   color: #ffffff;
@@ -33,11 +35,11 @@
 }
 
 .instruction-left {
-  left: -22%; /* Colocamos la instrucción en el lateral izquierdo */
+  left: 5%; /* Colocamos la instrucción en el lateral izquierdo */
 }
 
 .instruction-right {
-  right: 36%; /* Colocamos la instrucción en el lateral derecho */
+  right: 5%; /* Colocamos la instrucción en el lateral derecho */
 }
 
 .instructions-container p span {
